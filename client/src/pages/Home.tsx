@@ -22,6 +22,9 @@ import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
 import CostOptimizerPanel from "@/components/CostOptimizerPanel";
 import MaterialLibraryPanel from "@/components/MaterialLibraryPanel";
+import AcousticAnalysisPanel from "@/components/AcousticAnalysisPanel";
+import VRARPreviewPanel from "@/components/VRARPreviewPanel";
+import RenderingPanel from "@/components/RenderingPanel";
 
 type PanelType = "menu" | "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | null;
 
@@ -243,6 +246,12 @@ export default function Home() {
               <CostOptimizerPanel onClose={() => setActivePanel("menu")} />
             ) : activePanel === "materials" ? (
               <MaterialLibraryPanel onClose={() => setActivePanel("menu")} />
+            ) : activePanel === "acoustic" ? (
+              <AcousticAnalysisPanel onClose={() => setActivePanel("menu")} />
+            ) : activePanel === "vr-ar" ? (
+              <VRARPreviewPanel onClose={() => setActivePanel("menu")} />
+            ) : activePanel === "rendering" ? (
+              <RenderingPanel onClose={() => setActivePanel("menu")} />
             ) : (
               <div className="h-full flex items-center justify-center p-4 text-center text-gray-400">
                 <div>
