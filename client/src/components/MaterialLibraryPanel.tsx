@@ -1,4 +1,4 @@
-import { Library, X, Search, Filter } from "lucide-react";
+import { Library, X, Search, Filter, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const materialCategories = [
@@ -49,51 +49,59 @@ interface MaterialLibraryPanelProps {
 
 export default function MaterialLibraryPanel({ onClose }: MaterialLibraryPanelProps) {
   return (
-    <div className="h-full flex flex-col bg-[#0f1419]">
+    <div className="h-full flex flex-col bg-[#0f1419]/80 backdrop-blur-xl">
       {/* Header */}
-      <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <Library className="w-5 h-5 text-orange-400" />
-          <h3 className="font-semibold">Material Library</h3>
+      <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/5 rounded-lg transition-all -ml-2"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-400" />
+          </button>
+          <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
+            <Library className="w-5 h-5 text-orange-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-light tracking-wide">Material Library</h3>
+            <p className="text-xs text-gray-500">6,000+ materials</p>
+          </div>
         </div>
-        <button onClick={onClose} className="hover:text-teal-400 transition-colors">
-          <X className="w-5 h-5" />
-        </button>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-6">
         {/* Search Bar */}
-        <div className="mb-4">
+        <div className="mb-6">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input
               type="text"
               placeholder="Search 6,000+ materials..."
-              className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-teal-400 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-orange-400/50 focus:bg-white/10 transition-all placeholder:text-gray-500"
             />
           </div>
         </div>
 
         {/* Filter Button */}
-        <Button className="w-full mb-6 bg-white/5 hover:bg-white/10 border border-white/10 justify-start">
+        <Button className="w-full mb-8 h-12 bg-white/5 hover:bg-white/10 border border-white/10 justify-start">
           <Filter className="w-4 h-4 mr-2" />
           Advanced Filters
         </Button>
 
         {/* Material Categories */}
-        <div className="mb-6">
-          <h4 className="text-sm font-medium text-gray-300 mb-3">Categories</h4>
-          <div className="grid grid-cols-2 gap-2">
+        <div className="mb-8">
+          <h4 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Categories</h4>
+          <div className="grid grid-cols-2 gap-3">
             {materialCategories.map((category, index) => (
               <button
                 key={index}
-                className="flex items-center gap-2 p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-400/50 transition-all group text-left"
+                className="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-400/30 transition-all text-left"
               >
-                <div className={`w-8 h-8 rounded ${category.color} flex-shrink-0`} />
+                <div className={`w-10 h-10 rounded-lg ${category.color} flex-shrink-0 shadow-lg`} />
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-xs">{category.name}</div>
-                  <div className="text-[10px] text-gray-400">{category.count} items</div>
+                  <div className="font-medium text-white text-sm">{category.name}</div>
+                  <div className="text-xs text-gray-500">{category.count} items</div>
                 </div>
               </button>
             ))}
@@ -102,26 +110,26 @@ export default function MaterialLibraryPanel({ onClose }: MaterialLibraryPanelPr
 
         {/* Featured Materials */}
         <div>
-          <h4 className="text-sm font-medium text-gray-300 mb-3">Featured Materials</h4>
-          <div className="space-y-3">
+          <h4 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Featured Materials</h4>
+          <div className="space-y-4">
             {featuredMaterials.map((material, index) => (
               <div
                 key={index}
-                className="p-3 rounded-lg bg-white/5 border border-white/10 hover:border-teal-400/50 transition-all group cursor-pointer"
+                className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-orange-400/30 transition-all cursor-pointer"
               >
-                <div className="flex items-start gap-3 mb-2">
-                  <div className={`w-12 h-12 rounded ${material.color} flex-shrink-0 border border-white/20`} />
+                <div className="flex items-start gap-4 mb-3">
+                  <div className={`w-16 h-16 rounded-xl ${material.color} flex-shrink-0 border border-white/20 shadow-lg`} />
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm mb-0.5">{material.name}</div>
-                    <div className="text-xs text-gray-400 mb-1">{material.category}</div>
-                    <div className="text-xs font-semibold text-teal-400">{material.price}</div>
+                    <div className="font-medium text-white mb-1">{material.name}</div>
+                    <div className="text-sm text-gray-500 mb-2">{material.category}</div>
+                    <div className="text-sm font-semibold text-orange-400">{material.price}</div>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-2">
                   {material.properties.map((prop, propIndex) => (
                     <span
                       key={propIndex}
-                      className="px-2 py-0.5 bg-white/10 rounded text-[10px] text-gray-300"
+                      className="px-3 py-1 bg-white/10 rounded-lg text-xs text-gray-300"
                     >
                       {prop}
                     </span>
