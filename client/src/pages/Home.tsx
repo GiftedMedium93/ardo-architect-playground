@@ -17,6 +17,9 @@ import {
   Glasses,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
+import ThreeViewport from "@/components/ThreeViewport";
+import ProjectManager from "@/components/ProjectManager";
 import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
 import CostOptimizerPanel from "@/components/CostOptimizerPanel";
@@ -28,9 +31,15 @@ import RenderingPanel from "@/components/RenderingPanel";
 type PanelType = "menu" | "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | null;
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activePanel, setActivePanel] = useState<PanelType>("menu");
   const [activeTool, setActiveTool] = useState("select");
+  const [showProjectManager, setShowProjectManager] = useState(false);
+  const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
 
   const leftToolbarItems = [
     { id: "select", icon: Pencil, label: "Select", shortcut: "V" },
@@ -54,7 +63,13 @@ export default function Home() {
           </div>
           
           <nav className="flex items-center gap-1">
-            {["File", "Edit", "View", "Project", "Help"].map((item) => (
+            <button
+              onClick={() => setShowProjectManager(true)}
+              className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            >
+              File
+            </button>
+            {["Edit", "View", "Project", "Help"].map((item) => (
               <button
                 key={item}
                 className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
@@ -127,66 +142,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Canvas Content */}
-          <div className="flex-1 flex items-center justify-center p-12">
-            <div className="text-center max-w-2xl">
-              {/* 3D Cube Icon */}
-              <div className="mb-8 flex justify-center">
-                <div className="relative">
-                  <div className="w-32 h-32 flex items-center justify-center">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <defs>
-                        <linearGradient id="cubeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#14b8a6" stopOpacity="0.8" />
-                          <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.8" />
-                        </linearGradient>
-                      </defs>
-                      {/* Top face */}
-                      <path
-                        d="M50 20 L75 35 L50 50 L25 35 Z"
-                        fill="url(#cubeGradient)"
-                        stroke="#14b8a6"
-                        strokeWidth="1.5"
-                        opacity="0.9"
-                      />
-                      {/* Left face */}
-                      <path
-                        d="M25 35 L25 65 L50 80 L50 50 Z"
-                        fill="url(#cubeGradient)"
-                        stroke="#14b8a6"
-                        strokeWidth="1.5"
-                        opacity="0.6"
-                      />
-                      {/* Right face */}
-                      <path
-                        d="M50 50 L50 80 L75 65 L75 35 Z"
-                        fill="url(#cubeGradient)"
-                        stroke="#14b8a6"
-                        strokeWidth="1.5"
-                        opacity="0.7"
-                      />
-                    </svg>
-                  </div>
-                  <div className="absolute inset-0 bg-teal-400/20 blur-3xl -z-10" />
-                </div>
-              </div>
-
-              <h1 className="text-4xl font-light mb-4 tracking-tight">
-                Architect Playground
-              </h1>
-              <p className="text-lg text-gray-400 mb-10 font-light leading-relaxed">
-                Start designing with AI-powered tools and real-time 3D rendering.<br />
-                Your vision, elevated by intelligence.
-              </p>
-              
-              <button className="group px-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white rounded-xl font-medium shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all transform hover:scale-105">
-                <span className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5" />
-                  New Project
-                </span>
-              </button>
-            </div>
-          </div>
+          {/* 3D Viewport */}
+          <ThreeViewport className="flex-1" />
 
           {/* Bottom Status Bar */}
           <div className="h-12 border-t border-white/5 flex items-center justify-between px-6 bg-[#0f1419]/50 backdrop-blur-sm flex-shrink-0">
@@ -291,6 +248,13 @@ export default function Home() {
           </button>
         )}
       </div>
+
+      {/* Project Manager Modal */}
+      <ProjectManager
+        open={showProjectManager}
+        onClose={() => setShowProjectManager(false)}
+        onSelectProject={(projectId) => setCurrentProjectId(projectId)}
+      />
     </div>
   );
 }
