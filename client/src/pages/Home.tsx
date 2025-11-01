@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import ThreeViewport from "@/components/ThreeViewport";
 import ProjectManager from "@/components/ProjectManager";
+import InteractiveTutorial from "@/components/InteractiveTutorial";
 import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
 import AIChatPanel from "@/components/AIChatPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
@@ -43,6 +44,7 @@ export default function Home() {
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
   const [showAIChat, setShowAIChat] = useState(false);
   const [selectedAI, setSelectedAI] = useState<{ id: string; name: string; icon: string } | null>(null);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const leftToolbarItems = [
     { id: "select", icon: Pencil, label: "Select", shortcut: "V" },
@@ -72,7 +74,7 @@ export default function Home() {
             >
               File
             </button>
-            {["Edit", "View", "Project", "Help"].map((item) => (
+            {["Edit", "View", "Project"].map((item) => (
               <button
                 key={item}
                 className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
@@ -80,6 +82,12 @@ export default function Home() {
                 {item}
               </button>
             ))}
+            <button
+              onClick={() => setShowTutorial(true)}
+              className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            >
+              Help
+            </button>
           </nav>
         </div>
 
@@ -271,6 +279,14 @@ export default function Home() {
         onClose={() => setShowProjectManager(false)}
         onSelectProject={(projectId) => setCurrentProjectId(projectId)}
       />
+
+      {/* Interactive Tutorial */}
+      {showTutorial && (
+        <InteractiveTutorial
+          onComplete={() => setShowTutorial(false)}
+          onSkip={() => setShowTutorial(false)}
+        />
+      )}
     </div>
   );
 }

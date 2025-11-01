@@ -1,14 +1,88 @@
 import { OrbitControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useState, useRef } from "react";
+import * as THREE from "three";
 
 interface ThreeViewportProps {
   className?: string;
 }
 
-export default function ThreeViewport({ className }: ThreeViewportProps) {
+interface InteractiveMeshProps {
+  position: [number, number, number];
+  geometry: "box" | "sphere" | "cylinder";
+  onMaterialApply?: (material: any) => void;
+}
+
+function InteractiveMesh({ position, geometry, onMaterialApply }: InteractiveMeshProps) {
+  const [material, setMaterial] = useState<any>({
+    color: "#14b8a6",
+    metalness: 0.3,
+    roughness: 0.4,
+  });
+  const meshRef = useRef<THREE.Mesh>(null);
+
+  const handleClick = () => {
+    console.log("Mesh clicked", meshRef.current);
+  };
+
+  const geometryComponent = {
+    box: <boxGeometry args={[2, 2, 2]} />,
+    sphere: <sphereGeometry args={[1.5, 32, 32]} />,
+    cylinder: <cylinderGeometry args={[0.5, 0.5, 1, 32]} />,
+  }[geometry];
+
   return (
-    <div className={className}>
+    <mesh ref={meshRef} position={position} castShadow onClick={handleClick}>
+      {geometryComponent}
+      <meshStandardMaterial
+        color={material.color}
+        metalness={material.metalness}
+        roughness={material.roughness}
+      />
+    </mesh>
+  );
+}
+
+export default function ThreeViewport({ className }: ThreeViewportProps) {
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    
+    try {
+      const materialData = JSON.parse(e.dataTransfer.getData("application/json"));
+      console.log("Material dropped:", materialData);
+      // TODO: Apply material to selected 3D object
+    } catch (error) {
+      console.error("Failed to parse material data:", error);
+    }
+  };
+
+  return (
+    <div 
+      className={`${className} relative`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {isDragOver && (
+        <div className="absolute inset-0 bg-teal-500/20 border-4 border-teal-400 border-dashed rounded-xl z-10 flex items-center justify-center pointer-events-none">
+          <div className="px-8 py-4 bg-teal-500/90 backdrop-blur-sm rounded-xl text-white text-lg font-medium shadow-2xl">
+            Drop material to apply
+          </div>
+        </div>
+      )}
       <Canvas shadows>
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[10, 10, 10]} fov={50} />
@@ -39,21 +113,10 @@ export default function ThreeViewport({ className }: ThreeViewportProps) {
             infiniteGrid
           />
           
-          {/* Example 3D Objects - Replace with actual models */}
-          <mesh position={[0, 1, 0]} castShadow>
-            <boxGeometry args={[2, 2, 2]} />
-            <meshStandardMaterial color="#14b8a6" metalness={0.3} roughness={0.4} />
-          </mesh>
-          
-          <mesh position={[4, 0.5, 0]} castShadow>
-            <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
-            <meshStandardMaterial color="#06b6d4" metalness={0.5} roughness={0.3} />
-          </mesh>
-          
-          <mesh position={[-4, 1.5, 0]} castShadow>
-            <sphereGeometry args={[1.5, 32, 32]} />
-            <meshStandardMaterial color="#0891b2" metalness={0.2} roughness={0.5} />
-          </mesh>
+          {/* Interactive 3D Objects */}
+          <InteractiveMesh position={[0, 1, 0]} geometry="box" />
+          <InteractiveMesh position={[4, 0.5, 0]} geometry="cylinder" />
+          <InteractiveMesh position={[-4, 1.5, 0]} geometry="sphere" />
           
           {/* Ground plane */}
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>

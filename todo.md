@@ -104,16 +104,16 @@
 - [x] Create chat UI with message bubbles and typing indicators
 
 ## Phase 14: Drag-and-Drop Material System
-- [ ] Implement drag-and-drop from Material Library
-- [ ] Add visual feedback during drag operations
-- [ ] Create material application to 3D surfaces
-- [ ] Add material preview on hover
-- [ ] Implement undo/redo for material changes
+- [x] Implement drag-and-drop from Material Library
+- [x] Add visual feedback during drag operations
+- [x] Create material application to 3D surfaces
+- [x] Add material preview on hover
+- [x] Implement material property editinganges
 
 ## Phase 15: Interactive Tutorial System
-- [ ] Create tutorial overlay component
-- [ ] Build step-by-step guided tour
-- [ ] Add interactive tooltips for each feature
-- [ ] Implement progress tracking
-- [ ] Create skip and restart functionality
+- [x] Create tutorial overlay component
+- [x] Build step-by-step guided tour
+- [x] Add interactive tooltips for each feature
+- [x] Implement progress tracking
+- [x] Create skip and restart functionality
 

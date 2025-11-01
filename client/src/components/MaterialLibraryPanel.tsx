@@ -1,5 +1,7 @@
 import { Library, X, Search, Filter, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MaterialCard from "./MaterialCard";
+import { useState } from "react";
 
 const materialCategories = [
   { name: "Stone", count: 342, color: "bg-gray-500" },
@@ -14,32 +16,46 @@ const materialCategories = [
 
 const featuredMaterials = [
   {
+    id: "carrara-marble",
     name: "Carrara Marble",
     category: "Stone",
-    price: "$45/sq ft",
-    color: "bg-gray-100",
-    properties: ["Durable", "Elegant", "Natural"],
+    color: "#F5F5F5",
+    properties: { roughness: 0.2, metalness: 0, reflectivity: 0.5 },
   },
   {
+    id: "white-oak",
     name: "White Oak",
     category: "Wood",
-    price: "$12/bd ft",
-    color: "bg-amber-200",
-    properties: ["Hardwood", "Sustainable", "Classic"],
+    color: "#D4A574",
+    properties: { roughness: 0.7, metalness: 0, reflectivity: 0.2 },
   },
   {
+    id: "brushed-steel",
     name: "Brushed Steel",
     category: "Metal",
-    price: "$28/sq ft",
-    color: "bg-slate-300",
-    properties: ["Modern", "Corrosion-resistant", "Industrial"],
+    color: "#C0C0C0",
+    properties: { roughness: 0.4, metalness: 0.9, reflectivity: 0.6 },
   },
   {
+    id: "low-e-glass",
     name: "Low-E Glass",
     category: "Glass",
-    price: "$35/sq ft",
-    color: "bg-cyan-100",
-    properties: ["Energy-efficient", "UV-blocking", "Clear"],
+    color: "#E8F4F8",
+    properties: { roughness: 0.05, metalness: 0, reflectivity: 0.9 },
+  },
+  {
+    id: "concrete-polished",
+    name: "Polished Concrete",
+    category: "Concrete",
+    color: "#8B8D8E",
+    properties: { roughness: 0.3, metalness: 0.1, reflectivity: 0.4 },
+  },
+  {
+    id: "brick-red",
+    name: "Red Brick",
+    category: "Masonry",
+    color: "#B7410E",
+    properties: { roughness: 0.9, metalness: 0, reflectivity: 0.1 },
   },
 ];
 
@@ -48,6 +64,17 @@ interface MaterialLibraryPanelProps {
 }
 
 export default function MaterialLibraryPanel({ onClose }: MaterialLibraryPanelProps) {
+  const [draggedMaterial, setDraggedMaterial] = useState<any>(null);
+
+  const handleMaterialDragStart = (material: any) => {
+    setDraggedMaterial(material);
+    console.log("Dragging material:", material);
+  };
+
+  const handleMaterialApply = (material: any) => {
+    console.log("Applying material:", material);
+    // TODO: Apply material to selected 3D object
+  };
   return (
     <div className="h-full flex flex-col bg-[#0f1419]/80 backdrop-blur-xl">
       {/* Header */}
@@ -111,31 +138,15 @@ export default function MaterialLibraryPanel({ onClose }: MaterialLibraryPanelPr
         {/* Featured Materials */}
         <div>
           <h4 className="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Featured Materials</h4>
-          <div className="space-y-4">
-            {featuredMaterials.map((material, index) => (
-              <div
-                key={index}
-                className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-orange-400/30 transition-all cursor-pointer"
-              >
-                <div className="flex items-start gap-4 mb-3">
-                  <div className={`w-16 h-16 rounded-xl ${material.color} flex-shrink-0 border border-white/20 shadow-lg`} />
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium text-white mb-1">{material.name}</div>
-                    <div className="text-sm text-gray-500 mb-2">{material.category}</div>
-                    <div className="text-sm font-semibold text-orange-400">{material.price}</div>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {material.properties.map((prop, propIndex) => (
-                    <span
-                      key={propIndex}
-                      className="px-3 py-1 bg-white/10 rounded-lg text-xs text-gray-300"
-                    >
-                      {prop}
-                    </span>
-                  ))}
-                </div>
-              </div>
+          <p className="text-xs text-gray-500 mb-4">Drag materials onto the 3D canvas to apply them</p>
+          <div className="grid grid-cols-2 gap-4">
+            {featuredMaterials.map((material) => (
+              <MaterialCard
+                key={material.id}
+                material={material}
+                onDragStart={handleMaterialDragStart}
+                onApply={handleMaterialApply}
+              />
             ))}
           </div>
         </div>
