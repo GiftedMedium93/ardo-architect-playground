@@ -15,6 +15,7 @@ import {
   Library,
   Waves,
   Glasses,
+  Rocket,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -33,8 +34,9 @@ import MaterialLibraryPanel from "@/components/MaterialLibraryPanel";
 import AcousticAnalysisPanel from "@/components/AcousticAnalysisPanel";
 import VRARPreviewPanel from "@/components/VRARPreviewPanel";
 import RenderingPanel from "@/components/RenderingPanel";
+import SpaceArchitecturePanel from "@/components/SpaceArchitecturePanel";
 
-type PanelType = "menu" | "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | null;
+type PanelType = "menu" | "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | null;
 
 export default function Home() {
   // The userAuth hooks provides authentication state
@@ -264,6 +266,7 @@ export default function Home() {
                     { id: "materials", icon: Library, label: "Material Library", color: "text-orange-400", desc: "6,000+ materials" },
                     { id: "acoustic", icon: Waves, label: "Acoustic Analysis", color: "text-cyan-400", desc: "Sound simulation" },
                     { id: "vr-ar", icon: Glasses, label: "VR/AR Preview", color: "text-pink-400", desc: "Immersive view" },
+                    { id: "space-architecture", icon: Rocket, label: "Space Architecture", color: "text-indigo-400", desc: "Extraterrestrial design" },
                   ].map((tool) => (
                     <button
                       key={tool.id}
@@ -309,6 +312,8 @@ export default function Home() {
               <AcousticAnalysisPanel onClose={() => setActivePanel("menu")} />
             ) : activePanel === "vr-ar" ? (
               <VRARPreviewPanel onClose={() => setActivePanel("menu")} />
+            ) : activePanel === "space-architecture" ? (
+              <SpaceArchitecturePanel onClose={() => setActivePanel("menu")} />
             ) : activePanel === "rendering" ? (
               <RenderingPanel onClose={() => setActivePanel("menu")} />
             ) : null}
