@@ -397,6 +397,44 @@ interface TransportationInfrastructurePanelProps {
 - Traffic flow calculator
 - Infrastructure cost estimator
 
+#### MeasurementToolsPanel
+Panel for precision measurement instruments
+
+```typescript
+interface MeasurementToolsPanelProps {
+  onClose: () => void;
+}
+
+<MeasurementToolsPanel onClose={handleClose} />
+```
+
+**Features:**
+- Distance, area, volume, and angle measurement tools
+- Metric and Imperial unit systems
+- Adjustable decimal precision
+- Grid snap settings
+- Active measurements list
+- Quick shape templates
+
+#### SmartMaterialSelectionPanel
+Panel for AI-powered material recommendations
+
+```typescript
+interface SmartMaterialSelectionPanelProps {
+  onClose: () => void;
+}
+
+<SmartMaterialSelectionPanel onClose={handleClose} />
+```
+
+**Features:**
+- Budget range selection
+- Climate zone configuration
+- Priority settings (sustainability, durability, aesthetics)
+- AI-generated material recommendations with scores
+- Detailed material metrics and comparisons
+- Application suggestions
+
 ### UI Components (shadcn/ui)
 
 All UI components are from shadcn/ui and can be found in `client/src/components/ui/`:

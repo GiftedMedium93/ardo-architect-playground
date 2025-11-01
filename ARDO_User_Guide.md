@@ -18,7 +18,7 @@ ARDO features a clean, professional dark-themed interface designed to maximize y
 - **Top Toolbar**: Access File, Edit, View, Project, and Help menus
 - **Left Toolbar**: Quick access to essential design tools with keyboard shortcuts
 - **Central Canvas**: Interactive 3D viewport for designing and visualizing
-- **Right Panel**: Collapsible design tools panel with 9 major feature categories
+- **Right Panel**: Collapsible design tools panel with 11 major feature categories
 - **Bottom Status Bar**: Real-time information about your current tool, grid, and project status
 
 ### Your First Project
@@ -219,6 +219,61 @@ Plan and design comprehensive transportation systems.
 - Infrastructure cost estimation
 - Environmental impact assessment
 - Capacity planning
+
+### 11. Measurement Tools
+
+Precision measurement instruments for architectural design.
+
+**Tools:**
+- Distance measurement (linear)
+- Area calculation (surface)
+- Volume calculation (3D space)
+- Angle measurement
+- Grid snap system
+
+**Features:**
+- Metric and Imperial units
+- Adjustable decimal precision (2-5 places)
+- Grid snap settings (1mm to 1000mm)
+- Angle units (degrees/radians)
+- Active measurements list
+- Quick shape templates (triangle, circle, rectangle)
+
+**How to Use:**
+1. Open **"Measurement Tools"** in the right panel
+2. Select a measurement tool (Distance, Area, Volume, Angle)
+3. Click points in the 3D viewport to measure
+4. View results in Active Measurements list
+5. Toggle between Metric and Imperial units
+6. Adjust precision settings as needed
+
+### 12. Smart Material Selection
+
+AI-powered material recommendations based on your project requirements.
+
+**Selection Criteria:**
+- Budget range (Low, Medium, High, Unlimited)
+- Climate zone (Tropical, Arid, Temperate, Continental, Polar)
+- Sustainability priority
+- Durability priority
+- Aesthetics priority
+
+**AI Recommendations:**
+Each material recommendation includes:
+- Overall match score (0-100)
+- Sustainability rating
+- Durability rating
+- Aesthetics rating
+- Price indicator ($, $$, $$$)
+- Reasons for recommendation
+- Best applications
+
+**How to Use:**
+1. Open **"Smart Material Selection"** in the right panel
+2. Set your selection criteria (budget, climate, priorities)
+3. Review AI-generated recommendations
+4. Compare materials by score and metrics
+5. Click **"Apply to Selection"** to use a material
 
 ---
 

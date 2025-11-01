@@ -37,8 +37,10 @@ import VRARPreviewPanel from "@/components/VRARPreviewPanel";
 import RenderingPanel from "@/components/RenderingPanel";
 import SpaceArchitecturePanel from "@/components/SpaceArchitecturePanel";
 import TransportationInfrastructurePanel from "@/components/TransportationInfrastructurePanel";
+import MeasurementToolsPanel from "@/components/MeasurementToolsPanel";
+import SmartMaterialSelectionPanel from "@/components/SmartMaterialSelectionPanel";
 
-type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | null;
+type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | null;
 
 export default function Home() {
   // The userAuth hooks provides authentication state
@@ -270,6 +272,8 @@ export default function Home() {
                     { id: "vr-ar", icon: Glasses, label: "VR/AR Preview", color: "text-pink-400", desc: "Immersive view" },
                     { id: "space-architecture", icon: Rocket, label: "Space Architecture", color: "text-indigo-400", desc: "Extraterrestrial design" },
                     { id: "transportation", icon: Train, label: "Transportation Infrastructure", color: "text-blue-400", desc: "Transit & roads" },
+                    { id: "measurement", icon: Ruler, label: "Measurement Tools", color: "text-emerald-400", desc: "Precision instruments" },
+                    { id: "smart-material", icon: Sparkles, label: "Smart Material Selection", color: "text-purple-400", desc: "AI recommendations" },
                   ].map((tool) => (
                     <button
                       key={tool.id}
@@ -321,6 +325,10 @@ export default function Home() {
               <TransportationInfrastructurePanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "rendering" ? (
               <RenderingPanel onClose={() => setActivePanel(null)} />
+            ) : activePanel === "measurement" ? (
+              <MeasurementToolsPanel onClose={() => setActivePanel(null)} />
+            ) : activePanel === "smart-material" ? (
+              <SmartMaterialSelectionPanel onClose={() => setActivePanel(null)} />
             ) : null}
           </div>
         </div>
