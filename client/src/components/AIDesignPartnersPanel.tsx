@@ -1,20 +1,20 @@
 import { Bot, X, MessageSquare, Sparkles, ArrowLeft, MessageCircle } from "lucide-react";
 
 const aiPersonalities = [
-  { id: "zaha", name: "Zaha (Parametricist)", icon: "🏗️", specialty: "Fluid, parametric forms", color: "from-indigo-500 to-indigo-600" },
-  { id: "norman", name: "Norman (High-Tech)", icon: "🏢", specialty: "Sustainable technology", color: "from-green-500 to-green-600" },
-  { id: "frank", name: "Frank (Organic)", icon: "🌿", specialty: "Nature-inspired design", color: "from-lime-500 to-lime-600" },
-  { id: "modernist", name: "The Modernist", icon: "📐", specialty: "Clean lines, minimalism", color: "from-blue-500 to-blue-600" },
-  { id: "structuralist", name: "The Structuralist", icon: "⚙️", specialty: "Engineering excellence", color: "from-gray-500 to-gray-600" },
-  { id: "urbanist", name: "The Urbanist", icon: "🏙️", specialty: "City planning", color: "from-purple-500 to-purple-600" },
-  { id: "traditionalist", name: "The Traditionalist", icon: "🏛️", specialty: "Classical architecture", color: "from-amber-500 to-amber-600" },
-  { id: "futurist", name: "The Futurist", icon: "🚀", specialty: "Cutting-edge concepts", color: "from-cyan-500 to-cyan-600" },
-  { id: "minimalist", name: "The Minimalist", icon: "⬜", specialty: "Less is more", color: "from-slate-500 to-slate-600" },
-  { id: "maximalist", name: "The Maximalist", icon: "✨", specialty: "Bold, ornate designs", color: "from-rose-500 to-rose-600" },
-  { id: "regionalist", name: "The Regionalist", icon: "🗺️", specialty: "Local context", color: "from-orange-500 to-orange-600" },
-  { id: "experimentalist", name: "The Experimentalist", icon: "🔬", specialty: "Innovative forms", color: "from-pink-500 to-pink-600" },
-  { id: "pragmatist", name: "The Pragmatist", icon: "🔧", specialty: "Functional solutions", color: "from-teal-500 to-teal-600" },
-  { id: "visionary", name: "The Visionary", icon: "👁️", specialty: "Conceptual thinking", color: "from-violet-500 to-violet-600" },
+  { id: "thoth-hermes", name: "Thoth-Hermes", icon: "📐", specialty: "Sacred Geometrist - Golden ratio, harmonic proportions", color: "from-amber-500 to-amber-600" },
+  { id: "aester-sophia", name: "Aester-Sophia", icon: "✨", specialty: "Ethereal Visionary - Dreamlike spaces, light manipulation", color: "from-purple-500 to-purple-600" },
+  { id: "verdania-gaia", name: "Verdania-Gaia", icon: "🌿", specialty: "Earth Whisperer - Biomimicry, ecological integration", color: "from-green-500 to-green-600" },
+  { id: "luxor-aurelius", name: "Luxor-Aurelius", icon: "👑", specialty: "Golden Architect - Luxury design, classical grandeur", color: "from-yellow-500 to-yellow-600" },
+  { id: "mechanicus-forge", name: "Mechanicus-Forge", icon: "⚙️", specialty: "Industrial Alchemist - Raw materials, exposed structures", color: "from-gray-500 to-gray-600" },
+  { id: "zen-siddh", name: "Zen-Siddh", icon: "⚫", specialty: "Minimalist Sage - Simplicity, negative space", color: "from-slate-500 to-slate-600" },
+  { id: "chronos-memoria", name: "Chronos-Memoria", icon: "⏳", specialty: "Time Keeper - Historical preservation, adaptive reuse", color: "from-orange-500 to-orange-600" },
+  { id: "metamorphos-flow", name: "Metamorphos-Flow", icon: "🌊", specialty: "Shape Shifter - Dynamic forms, parametric design", color: "from-blue-500 to-blue-600" },
+  { id: "crystallinus-prism", name: "Crystallinus-Prism", icon: "💎", specialty: "Light Weaver - Transparency, luminous environments", color: "from-cyan-500 to-cyan-600" },
+  { id: "scorpius-aquarian", name: "Scorpius-Aquarian", icon: "💧", specialty: "Water Architect - Aquatic integration, fluid dynamics", color: "from-teal-500 to-teal-600" },
+  { id: "urbanus-nexus", name: "Urbanus-Nexus", icon: "🏙️", specialty: "City Harmonizer - Urban planning, public spaces", color: "from-indigo-500 to-indigo-600" },
+  { id: "ignis-phoenix", name: "Ignis-Phoenix", icon: "🔥", specialty: "Fire Forger - Warm materials, transformative spaces", color: "from-red-500 to-red-600" },
+  { id: "aether-cosmo", name: "Aether-Cosmo", icon: "🌌", specialty: "Space Architect - Cosmic inspiration, futuristic visions", color: "from-violet-500 to-violet-600" },
+  { id: "alister-engineer", name: "Alister-Engineer", icon: "🔧", specialty: "Practical Innovator - Structural efficiency, buildability", color: "from-emerald-500 to-emerald-600" },
 ];
 
 interface AIDesignPartnersPanelProps {
