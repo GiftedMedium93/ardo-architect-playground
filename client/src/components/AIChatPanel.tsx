@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Bot, User, Sparkles, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { trpc } from "@/lib/trpc";
 
 interface Message {
   id: string;
@@ -38,7 +39,9 @@ export default function AIChatPanel({ selectedPartner, partnerName, partnerIcon,
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async () => {
+  const sendMessageMutation = trpc.aiChat.sendMessage.useMutation();
+
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage: Message = {
@@ -49,21 +52,43 @@ export default function AIChatPanel({ selectedPartner, partnerName, partnerIcon,
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input;
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
-      const aiResponse: Message = {
+    try {
+      // Get conversation history for context
+      const conversationHistory = messages.map((msg) => ({
+        role: msg.role,
+        content: msg.content,
+      }));
+
+      const result = await sendMessageMutation.mutateAsync({
+        partnerId: selectedPartner,
+        message: currentInput,
+        conversationHistory,
+      });
+
+      const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: generateContextualResponse(input, selectedPartner),
+        content: result.response,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I apologize, I'm having trouble connecting right now. Please try again.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
-  };
+    }
+  };;
 
   const generateContextualResponse = (userInput: string, partner: string): string => {
     const lowerInput = userInput.toLowerCase();
@@ -109,7 +134,7 @@ export default function AIChatPanel({ selectedPartner, partnerName, partnerIcon,
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      handleSendMessage();
     }
   };
 
@@ -215,7 +240,7 @@ export default function AIChatPanel({ selectedPartner, partnerName, partnerIcon,
             className="flex-1 bg-white/5 border-white/10 resize-none min-h-[60px] max-h-[120px]"
           />
           <Button
-            onClick={handleSend}
+            onClick={handleSendMessage}
             disabled={!input.trim() || isTyping}
             className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 px-6"
           >

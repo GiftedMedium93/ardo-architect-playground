@@ -15,12 +15,14 @@ import {
   Library,
   Waves,
   Glasses,
+  X,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import ThreeViewport from "@/components/ThreeViewport";
 import ProjectManager from "@/components/ProjectManager";
 import InteractiveTutorial from "@/components/InteractiveTutorial";
+import ModelLoader from "@/components/ModelLoader";
 import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
 import AIChatPanel from "@/components/AIChatPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
@@ -45,6 +47,8 @@ export default function Home() {
   const [showAIChat, setShowAIChat] = useState(false);
   const [selectedAI, setSelectedAI] = useState<{ id: string; name: string; icon: string } | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [loadedModel, setLoadedModel] = useState<{ url: string; name: string; type: string } | null>(null);
+  const [showModelLoader, setShowModelLoader] = useState(false);
 
   const leftToolbarItems = [
     { id: "select", icon: Pencil, label: "Select", shortcut: "V" },
@@ -68,12 +72,25 @@ export default function Home() {
           </div>
           
           <nav className="flex items-center gap-1">
-            <button
-              onClick={() => setShowProjectManager(true)}
-              className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-            >
-              File
-            </button>
+            <div className="relative group">
+              <button className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
+                File
+              </button>
+              <div className="absolute top-full left-0 mt-1 w-48 bg-[#0f1419] border border-white/10 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <button
+                  onClick={() => setShowProjectManager(true)}
+                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all first:rounded-t-lg"
+                >
+                  Projects
+                </button>
+                <button
+                  onClick={() => setShowModelLoader(true)}
+                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all last:rounded-b-lg"
+                >
+                  Load 3D Model
+                </button>
+              </div>
+            </div>
             {["Edit", "View", "Project"].map((item) => (
               <button
                 key={item}
@@ -154,7 +171,11 @@ export default function Home() {
           </div>
 
           {/* 3D Viewport */}
-          <ThreeViewport className="flex-1" />
+          <ThreeViewport 
+          className="flex-1" 
+          loadedModel={loadedModel}
+          onModelLoaded={() => console.log("Model loaded successfully")}
+        />
 
           {/* Bottom Status Bar */}
           <div className="h-12 border-t border-white/5 flex items-center justify-between px-6 bg-[#0f1419]/50 backdrop-blur-sm flex-shrink-0">
@@ -286,6 +307,26 @@ export default function Home() {
           onComplete={() => setShowTutorial(false)}
           onSkip={() => setShowTutorial(false)}
         />
+      )}
+
+      {/* Model Loader Modal */}
+      {showModelLoader && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center" onClick={() => setShowModelLoader(false)}>
+          <div className="bg-[#0f1419] border border-white/10 rounded-2xl shadow-2xl w-[500px] max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+              <h3 className="text-xl font-light">Load 3D Model</h3>
+              <button onClick={() => setShowModelLoader(false)} className="p-2 hover:bg-white/5 rounded-lg transition-all">
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+            <ModelLoader 
+              onModelLoad={(modelData) => {
+                setLoadedModel(modelData);
+                setShowModelLoader(false);
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

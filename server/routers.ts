@@ -5,9 +5,12 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
 import * as projectDb from "./projectDb";
 import { nanoid } from "nanoid";
+import { aiChatRouter } from "./aiChatRouter";
 
 export const appRouter = router({
   system: systemRouter,
+
+  aiChat: aiChatRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

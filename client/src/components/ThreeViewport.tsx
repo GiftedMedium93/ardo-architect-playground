@@ -1,10 +1,14 @@
 import { OrbitControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useState, useRef } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import * as THREE from "three";
+import { useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three-stdlib";
 
 interface ThreeViewportProps {
   className?: string;
+  loadedModel?: { url: string; name: string; type: string } | null;
+  onModelLoaded?: () => void;
 }
 
 interface InteractiveMeshProps {
@@ -25,6 +29,21 @@ function InteractiveMesh({ position, geometry, onMaterialApply }: InteractiveMes
     console.log("Mesh clicked", meshRef.current);
   };
 
+  // Listen for material drop events
+  useEffect(() => {
+    const handleMaterialDrop = (event: CustomEvent) => {
+      const materialData = event.detail;
+      setMaterial({
+        color: materialData.color,
+        metalness: materialData.properties.metalness,
+        roughness: materialData.properties.roughness,
+      });
+    };
+
+    window.addEventListener("materialDrop" as any, handleMaterialDrop);
+    return () => window.removeEventListener("materialDrop" as any, handleMaterialDrop);
+  }, []);
+
   const geometryComponent = {
     box: <boxGeometry args={[2, 2, 2]} />,
     sphere: <sphereGeometry args={[1.5, 32, 32]} />,
@@ -43,7 +62,19 @@ function InteractiveMesh({ position, geometry, onMaterialApply }: InteractiveMes
   );
 }
 
-export default function ThreeViewport({ className }: ThreeViewportProps) {
+function LoadedModel({ url, onLoaded }: { url: string; onLoaded?: () => void }) {
+  const gltf = useLoader(GLTFLoader, url);
+  
+  useEffect(() => {
+    if (gltf && onLoaded) {
+      onLoaded();
+    }
+  }, [gltf, onLoaded]);
+
+  return <primitive object={gltf.scene} scale={2} />;
+}
+
+export default function ThreeViewport({ className, loadedModel, onModelLoaded }: ThreeViewportProps) {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -63,7 +94,9 @@ export default function ThreeViewport({ className }: ThreeViewportProps) {
     try {
       const materialData = JSON.parse(e.dataTransfer.getData("application/json"));
       console.log("Material dropped:", materialData);
-      // TODO: Apply material to selected 3D object
+      
+      // Dispatch custom event to apply material to all meshes
+      window.dispatchEvent(new CustomEvent("materialDrop", { detail: materialData }));
     } catch (error) {
       console.error("Failed to parse material data:", error);
     }
@@ -113,10 +146,18 @@ export default function ThreeViewport({ className }: ThreeViewportProps) {
             infiniteGrid
           />
           
-          {/* Interactive 3D Objects */}
-          <InteractiveMesh position={[0, 1, 0]} geometry="box" />
-          <InteractiveMesh position={[4, 0.5, 0]} geometry="cylinder" />
-          <InteractiveMesh position={[-4, 1.5, 0]} geometry="sphere" />
+          {/* Loaded Model or Default Objects */}
+          {loadedModel ? (
+            <Suspense fallback={null}>
+              <LoadedModel url={loadedModel.url} onLoaded={onModelLoaded} />
+            </Suspense>
+          ) : (
+            <>
+              <InteractiveMesh position={[0, 1, 0]} geometry="box" />
+              <InteractiveMesh position={[4, 0.5, 0]} geometry="cylinder" />
+              <InteractiveMesh position={[-4, 1.5, 0]} geometry="sphere" />
+            </>
+          )}
           
           {/* Ground plane */}
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
