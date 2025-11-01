@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Folder, Plus, Trash2, Clock } from "lucide-react";
+import { ProjectCardSkeleton } from "@/components/LoadingSkeleton";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -123,7 +124,11 @@ export default function ProjectManager({ open, onClose, onSelectProject }: Proje
               </div>
 
               {isLoading ? (
-                <div className="text-center py-12 text-gray-400">Loading projects...</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <ProjectCardSkeleton key={i} />
+                  ))}
+                </div>
               ) : projects && projects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {projects.map((project) => (
