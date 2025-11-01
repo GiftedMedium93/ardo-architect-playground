@@ -123,7 +123,7 @@
 - [x] Add real 3D model loading (GLTF/OBJ file upload)
 - [x] Implement actual material application to 3D objects
 - [x] Add AI chat with OpenRouter API integration
-- [ ] Create export functionality (PNG, PDF, 3D formats)
+- [x] Create export functionality (PNG, PDF, 3D formats)
 - [ ] Add real-time rendering style switching
 - [ ] Implement compliance check with actual code validation
 - [ ] Add cost calculation with real pricing data
@@ -133,7 +133,7 @@
 - [ ] Implement real-time collaboration with multiplayer cursors
 - [ ] Add cloud sync for projects and settings
 - [ ] Create analytics dashboard with usage metrics
-- [ ] Add keyboard shortcuts panel (press '?')
+- [x] Add keyboard shortcuts panel (press '?')
 - [ ] Implement undo/redo system
 - [ ] Add search functionality across all features
 - [ ] Create notification center

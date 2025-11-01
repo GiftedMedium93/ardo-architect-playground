@@ -17,12 +17,14 @@ import {
   Glasses,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import ThreeViewport from "@/components/ThreeViewport";
 import ProjectManager from "@/components/ProjectManager";
 import InteractiveTutorial from "@/components/InteractiveTutorial";
 import ModelLoader from "@/components/ModelLoader";
+import KeyboardShortcutsPanel from "@/components/KeyboardShortcutsPanel";
+import ExportPanel from "@/components/ExportPanel";
 import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
 import AIChatPanel from "@/components/AIChatPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
@@ -49,6 +51,30 @@ export default function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [loadedModel, setLoadedModel] = useState<{ url: string; name: string; type: string } | null>(null);
   const [showModelLoader, setShowModelLoader] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showExport, setShowExport] = useState(false);
+
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Show shortcuts with '?'
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        setShowShortcuts(true);
+      }
+      // Close panels with Escape
+      if (e.key === 'Escape') {
+        setShowShortcuts(false);
+        setShowProjectManager(false);
+        setShowModelLoader(false);
+        setShowAIChat(false);
+        setShowTutorial(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   const leftToolbarItems = [
     { id: "select", icon: Pencil, label: "Select", shortcut: "V" },
@@ -85,9 +111,15 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => setShowModelLoader(true)}
-                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all last:rounded-b-lg"
+                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all"
                 >
                   Load 3D Model
+                </button>
+                <button
+                  onClick={() => setShowExport(true)}
+                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all last:rounded-b-lg"
+                >
+                  Export
                 </button>
               </div>
             </div>
@@ -307,6 +339,16 @@ export default function Home() {
           onComplete={() => setShowTutorial(false)}
           onSkip={() => setShowTutorial(false)}
         />
+      )}
+
+      {/* Keyboard Shortcuts Panel */}
+      {showShortcuts && (
+        <KeyboardShortcutsPanel onClose={() => setShowShortcuts(false)} />
+      )}
+
+      {/* Export Panel */}
+      {showExport && (
+        <ExportPanel onClose={() => setShowExport(false)} projectName="My Project" />
       )}
 
       {/* Model Loader Modal */}
