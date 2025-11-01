@@ -1,27 +1,28 @@
-import { Bot, X, MessageSquare, Sparkles, ArrowLeft } from "lucide-react";
+import { Bot, X, MessageSquare, Sparkles, ArrowLeft, MessageCircle } from "lucide-react";
 
 const aiPersonalities = [
-  { name: "The Modernist", specialty: "Clean lines, minimalism", color: "from-blue-500 to-blue-600" },
-  { name: "The Structuralist", specialty: "Engineering excellence", color: "from-green-500 to-green-600" },
-  { name: "The Sustainabilist", specialty: "Eco-friendly design", color: "from-emerald-500 to-emerald-600" },
-  { name: "The Urbanist", specialty: "City planning", color: "from-purple-500 to-purple-600" },
-  { name: "The Traditionalist", specialty: "Classical architecture", color: "from-amber-500 to-amber-600" },
-  { name: "The Futurist", specialty: "Cutting-edge concepts", color: "from-cyan-500 to-cyan-600" },
-  { name: "The Biophilic", specialty: "Nature integration", color: "from-lime-500 to-lime-600" },
-  { name: "The Minimalist", specialty: "Less is more", color: "from-slate-500 to-slate-600" },
-  { name: "The Maximalist", specialty: "Bold, ornate designs", color: "from-rose-500 to-rose-600" },
-  { name: "The Parametricist", specialty: "Algorithmic design", color: "from-indigo-500 to-indigo-600" },
-  { name: "The Regionalist", specialty: "Local context", color: "from-orange-500 to-orange-600" },
-  { name: "The Experimentalist", specialty: "Innovative forms", color: "from-pink-500 to-pink-600" },
-  { name: "The Pragmatist", specialty: "Functional solutions", color: "from-teal-500 to-teal-600" },
-  { name: "The Visionary", specialty: "Conceptual thinking", color: "from-violet-500 to-violet-600" },
+  { id: "zaha", name: "Zaha (Parametricist)", icon: "🏗️", specialty: "Fluid, parametric forms", color: "from-indigo-500 to-indigo-600" },
+  { id: "norman", name: "Norman (High-Tech)", icon: "🏢", specialty: "Sustainable technology", color: "from-green-500 to-green-600" },
+  { id: "frank", name: "Frank (Organic)", icon: "🌿", specialty: "Nature-inspired design", color: "from-lime-500 to-lime-600" },
+  { id: "modernist", name: "The Modernist", icon: "📐", specialty: "Clean lines, minimalism", color: "from-blue-500 to-blue-600" },
+  { id: "structuralist", name: "The Structuralist", icon: "⚙️", specialty: "Engineering excellence", color: "from-gray-500 to-gray-600" },
+  { id: "urbanist", name: "The Urbanist", icon: "🏙️", specialty: "City planning", color: "from-purple-500 to-purple-600" },
+  { id: "traditionalist", name: "The Traditionalist", icon: "🏛️", specialty: "Classical architecture", color: "from-amber-500 to-amber-600" },
+  { id: "futurist", name: "The Futurist", icon: "🚀", specialty: "Cutting-edge concepts", color: "from-cyan-500 to-cyan-600" },
+  { id: "minimalist", name: "The Minimalist", icon: "⬜", specialty: "Less is more", color: "from-slate-500 to-slate-600" },
+  { id: "maximalist", name: "The Maximalist", icon: "✨", specialty: "Bold, ornate designs", color: "from-rose-500 to-rose-600" },
+  { id: "regionalist", name: "The Regionalist", icon: "🗺️", specialty: "Local context", color: "from-orange-500 to-orange-600" },
+  { id: "experimentalist", name: "The Experimentalist", icon: "🔬", specialty: "Innovative forms", color: "from-pink-500 to-pink-600" },
+  { id: "pragmatist", name: "The Pragmatist", icon: "🔧", specialty: "Functional solutions", color: "from-teal-500 to-teal-600" },
+  { id: "visionary", name: "The Visionary", icon: "👁️", specialty: "Conceptual thinking", color: "from-violet-500 to-violet-600" },
 ];
 
 interface AIDesignPartnersPanelProps {
   onClose: () => void;
+  onOpenChat: (partnerId: string, partnerName: string, partnerIcon: string) => void;
 }
 
-export default function AIDesignPartnersPanel({ onClose }: AIDesignPartnersPanelProps) {
+export default function AIDesignPartnersPanel({ onClose, onOpenChat }: AIDesignPartnersPanelProps) {
   return (
     <div className="h-full flex flex-col bg-[#0f1419]/80 backdrop-blur-xl">
       {/* Header */}
@@ -62,7 +63,16 @@ export default function AIDesignPartnersPanel({ onClose }: AIDesignPartnersPanel
                 <div className="font-medium text-white mb-1">{ai.name}</div>
                 <div className="text-sm text-gray-500">{ai.specialty}</div>
               </div>
-              <MessageSquare className="w-5 h-5 text-gray-600 group-hover:text-blue-400 transition-colors flex-shrink-0" />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenChat(ai.id, ai.name, ai.icon);
+                }}
+                className="p-2.5 bg-teal-500/20 hover:bg-teal-500/30 rounded-lg transition-colors flex-shrink-0"
+                title="Chat with this partner"
+              >
+                <MessageCircle className="w-4 h-4 text-teal-400" />
+              </button>
             </button>
           ))}
         </div>

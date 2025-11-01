@@ -21,6 +21,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import ThreeViewport from "@/components/ThreeViewport";
 import ProjectManager from "@/components/ProjectManager";
 import AIDesignPartnersPanel from "@/components/AIDesignPartnersPanel";
+import AIChatPanel from "@/components/AIChatPanel";
 import ComplianceCheckPanel from "@/components/ComplianceCheckPanel";
 import CostOptimizerPanel from "@/components/CostOptimizerPanel";
 import MaterialLibraryPanel from "@/components/MaterialLibraryPanel";
@@ -40,6 +41,8 @@ export default function Home() {
   const [activeTool, setActiveTool] = useState("select");
   const [showProjectManager, setShowProjectManager] = useState(false);
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
+  const [showAIChat, setShowAIChat] = useState(false);
+  const [selectedAI, setSelectedAI] = useState<{ id: string; name: string; icon: string } | null>(null);
 
   const leftToolbarItems = [
     { id: "select", icon: Pencil, label: "Select", shortcut: "V" },
@@ -220,8 +223,21 @@ export default function Home() {
                   ))}
                 </div>
               </>
-            ) : activePanel === "ai-partners" ? (
-              <AIDesignPartnersPanel onClose={() => setActivePanel("menu")} />
+            ) : activePanel === "ai-partners" && !showAIChat ? (
+              <AIDesignPartnersPanel 
+                onClose={() => setActivePanel("menu")} 
+                onOpenChat={(partnerId, partnerName, partnerIcon) => {
+                  setSelectedAI({ id: partnerId, name: partnerName, icon: partnerIcon });
+                  setShowAIChat(true);
+                }}
+              />
+            ) : activePanel === "ai-partners" && showAIChat && selectedAI ? (
+              <AIChatPanel
+                selectedPartner={selectedAI.id}
+                partnerName={selectedAI.name}
+                partnerIcon={selectedAI.icon}
+                onBack={() => setShowAIChat(false)}
+              />
             ) : activePanel === "compliance" ? (
               <ComplianceCheckPanel onClose={() => setActivePanel("menu")} />
             ) : activePanel === "cost" ? (
