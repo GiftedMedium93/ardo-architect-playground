@@ -16,6 +16,7 @@ import {
   Waves,
   Glasses,
   Rocket,
+  Train,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -35,8 +36,9 @@ import AcousticAnalysisPanel from "@/components/AcousticAnalysisPanel";
 import VRARPreviewPanel from "@/components/VRARPreviewPanel";
 import RenderingPanel from "@/components/RenderingPanel";
 import SpaceArchitecturePanel from "@/components/SpaceArchitecturePanel";
+import TransportationInfrastructurePanel from "@/components/TransportationInfrastructurePanel";
 
-type PanelType = "menu" | "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | null;
+type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | null;
 
 export default function Home() {
   // The userAuth hooks provides authentication state
@@ -44,7 +46,7 @@ export default function Home() {
   let { user, loading, error, isAuthenticated, logout } = useAuth();
 
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
-  const [activePanel, setActivePanel] = useState<PanelType>("menu");
+  const [activePanel, setActivePanel] = useState<PanelType>(null);
   const [activeTool, setActiveTool] = useState("select");
   const [showProjectManager, setShowProjectManager] = useState(false);
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
@@ -243,7 +245,7 @@ export default function Home() {
           }`}
         >
           <div className="w-96 h-full flex flex-col">
-            {activePanel === "menu" ? (
+            {activePanel === null ? (
               <>
                 {/* Panel Header */}
                 <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 flex-shrink-0">
@@ -267,6 +269,7 @@ export default function Home() {
                     { id: "acoustic", icon: Waves, label: "Acoustic Analysis", color: "text-cyan-400", desc: "Sound simulation" },
                     { id: "vr-ar", icon: Glasses, label: "VR/AR Preview", color: "text-pink-400", desc: "Immersive view" },
                     { id: "space-architecture", icon: Rocket, label: "Space Architecture", color: "text-indigo-400", desc: "Extraterrestrial design" },
+                    { id: "transportation", icon: Train, label: "Transportation Infrastructure", color: "text-blue-400", desc: "Transit & roads" },
                   ].map((tool) => (
                     <button
                       key={tool.id}
@@ -289,7 +292,7 @@ export default function Home() {
               </>
             ) : activePanel === "ai-partners" && !showAIChat ? (
               <AIDesignPartnersPanel 
-                onClose={() => setActivePanel("menu")} 
+                onClose={() => setActivePanel(null)}
                 onOpenChat={(partnerId, partnerName, partnerIcon) => {
                   setSelectedAI({ id: partnerId, name: partnerName, icon: partnerIcon });
                   setShowAIChat(true);
@@ -303,19 +306,21 @@ export default function Home() {
                 onBack={() => setShowAIChat(false)}
               />
             ) : activePanel === "compliance" ? (
-              <ComplianceCheckPanel onClose={() => setActivePanel("menu")} />
+              <ComplianceCheckPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "cost" ? (
-              <CostOptimizerPanel onClose={() => setActivePanel("menu")} />
+              <CostOptimizerPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "materials" ? (
-              <MaterialLibraryPanel onClose={() => setActivePanel("menu")} />
+              <MaterialLibraryPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "acoustic" ? (
-              <AcousticAnalysisPanel onClose={() => setActivePanel("menu")} />
+              <AcousticAnalysisPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "vr-ar" ? (
-              <VRARPreviewPanel onClose={() => setActivePanel("menu")} />
+              <VRARPreviewPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "space-architecture" ? (
-              <SpaceArchitecturePanel onClose={() => setActivePanel("menu")} />
+              <SpaceArchitecturePanel onClose={() => setActivePanel(null)} />
+            ) : activePanel === "transportation" ? (
+              <TransportationInfrastructurePanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "rendering" ? (
-              <RenderingPanel onClose={() => setActivePanel("menu")} />
+              <RenderingPanel onClose={() => setActivePanel(null)} />
             ) : null}
           </div>
         </div>

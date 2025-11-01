@@ -356,6 +356,47 @@ interface ProjectManagerProps {
 <ProjectManager open={isOpen} onClose={handleClose} onSelectProject={handleSelect} />
 ```
 
+#### SpaceArchitecturePanel
+Panel for designing extraterrestrial habitats and space structures
+
+```typescript
+interface SpaceArchitecturePanelProps {
+  onClose: () => void;
+}
+
+<SpaceArchitecturePanel onClose={handleClose} />
+```
+
+**Features:**
+- 8 space environments (Moon, Mars, LEO, asteroids, deep space)
+- 12 specialized space materials
+- Habitat design templates
+- Radiation shielding calculator
+- Life support systems calculator
+- Environmental conditions analysis
+
+#### TransportationInfrastructurePanel
+Panel for designing comprehensive transportation systems
+
+```typescript
+interface TransportationInfrastructurePanelProps {
+  onClose: () => void;
+}
+
+<TransportationInfrastructurePanel onClose={handleClose} />
+```
+
+**Features:**
+- Rail systems database (freight, passenger, high-speed)
+- Light rail and metro systems
+- Road design database (freeways to local streets)
+- Bridge design templates (5 major types)
+- Tunnel design database (3 construction methods)
+- Intersection and roundabout designs
+- Pedestrian and bicycle infrastructure
+- Traffic flow calculator
+- Infrastructure cost estimator
+
 ### UI Components (shadcn/ui)
 
 All UI components are from shadcn/ui and can be found in `client/src/components/ui/`:

@@ -18,7 +18,7 @@ ARDO features a clean, professional dark-themed interface designed to maximize y
 - **Top Toolbar**: Access File, Edit, View, Project, and Help menus
 - **Left Toolbar**: Quick access to essential design tools with keyboard shortcuts
 - **Central Canvas**: Interactive 3D viewport for designing and visualizing
-- **Right Panel**: Collapsible design tools panel with 7 major feature categories
+- **Right Panel**: Collapsible design tools panel with 9 major feature categories
 - **Bottom Status Bar**: Real-time information about your current tool, grid, and project status
 
 ### Your First Project
@@ -161,6 +161,64 @@ Immersive visualization for client presentations.
 - Multiple viewing modes (Walk, Fly, Orbit)
 - Teleportation controls
 - Scale adjustment
+
+### 9. Space Architecture Design
+
+Design extraterrestrial habitats and space structures.
+
+**Environments:**
+- Moon (Lunar surface, lava tubes, polar regions)
+- Mars (Surface, subsurface, Olympus Mons)
+- Low Earth Orbit (ISS-style stations)
+- Asteroids (Ceres, Vesta, Psyche)
+- Deep Space (Lagrange points, interstellar)
+
+**Features:**
+- Space conditions calculator (gravity, radiation, temperature)
+- Specialized space materials database
+- Habitat design templates (pressurized, inflatable, underground)
+- Life support systems calculator
+- Radiation shielding calculator
+- Micrometeorite protection
+- Energy systems (solar, nuclear, fusion)
+- Thermal management
+
+### 10. Transportation Infrastructure Design
+
+Plan and design comprehensive transportation systems.
+
+**Rail Systems:**
+- Freight rail (heavy, intermodal, bulk)
+- Passenger rail (regional, intercity, commuter)
+- High-speed rail (200-350+ km/h)
+- Light rail & metro systems
+- Streetcars & trolleys
+- Monorail systems
+
+**Road Systems:**
+- Freeways & highways
+- Arterial roads
+- Collector streets
+- Local streets & alleys
+- Complete street designs
+
+**Structures:**
+- Bridges (suspension, cable-stayed, arch, truss, beam)
+- Tunnels (bored, cut-and-cover, immersed tube)
+- Interchanges & intersections
+- Roundabouts & traffic circles
+
+**Additional Infrastructure:**
+- Pedestrian infrastructure (sidewalks, crosswalks, plazas)
+- Bicycle infrastructure (bike lanes, cycle tracks, bike parking)
+- Bus rapid transit (BRT) systems
+- Parking structures
+
+**Calculators:**
+- Traffic flow analysis
+- Infrastructure cost estimation
+- Environmental impact assessment
+- Capacity planning
 
 ---
 
