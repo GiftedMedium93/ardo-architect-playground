@@ -435,6 +435,50 @@ interface SmartMaterialSelectionPanelProps {
 - Detailed material metrics and comparisons
 - Application suggestions
 
+#### MaterialIdentificationPanel
+Panel for AI-powered material identification from images
+
+```typescript
+interface MaterialIdentificationPanelProps {
+  onClose: () => void;
+}
+
+<MaterialIdentificationPanel onClose={handleClose} />
+```
+
+**Features:**
+- Three identification categories (Color/Texture/Fabric, Stone/Wood/Metal, Plant/Animal/Fungi)
+- Image upload with drag-and-drop support
+- AI vision analysis using OpenRouter API with Gemini 2.0 Flash
+- Confidence scores and detailed material properties
+- Alternative matches and architectural recommendations
+- Support for PNG, JPG images up to 5MB
+
+### Custom Hooks
+
+#### useUndoRedo
+Custom hook for state history management with undo/redo functionality
+
+```typescript
+const { 
+  state, 
+  setState, 
+  undo, 
+  redo, 
+  canUndo, 
+  canRedo, 
+  clear,
+  historyLength 
+} = useUndoRedo<T>(initialState, maxHistoryLength);
+```
+
+**Features:**
+- Generic type support for any state shape
+- Configurable history length (default: 50)
+- Automatic history management
+- Keyboard shortcuts integration (Ctrl+Z, Ctrl+Y)
+- Toast notifications for user feedback
+
 ### UI Components (shadcn/ui)
 
 All UI components are from shadcn/ui and can be found in `client/src/components/ui/`:

@@ -18,7 +18,7 @@ ARDO features a clean, professional dark-themed interface designed to maximize y
 - **Top Toolbar**: Access File, Edit, View, Project, and Help menus
 - **Left Toolbar**: Quick access to essential design tools with keyboard shortcuts
 - **Central Canvas**: Interactive 3D viewport for designing and visualizing
-- **Right Panel**: Collapsible design tools panel with 11 major feature categories
+- **Right Panel**: Collapsible design tools panel with 12 major feature categories
 - **Bottom Status Bar**: Real-time information about your current tool, grid, and project status
 
 ### Your First Project
@@ -275,6 +275,31 @@ Each material recommendation includes:
 4. Compare materials by score and metrics
 5. Click **"Apply to Selection"** to use a material
 
+### 13. Material Identification
+
+AI-powered image recognition to identify materials from photos.
+
+**Categories:**
+- Color/Texture/Fabric identification
+- Stone/Wood/Metal identification
+- Plant/Animal/Fungi identification
+
+**Features:**
+- Upload images (PNG, JPG up to 5MB)
+- AI vision analysis using advanced computer vision
+- Confidence scores for identifications
+- Material properties and characteristics
+- Alternative matches
+- Architectural application recommendations
+
+**How to Use:**
+1. Open **"Material Identification"** in the right panel
+2. Select an identification category
+3. Click to upload an image or drag and drop
+4. Click **"Identify Material"** to analyze
+5. Review AI-generated identification results
+6. View material properties and recommendations
+
 ---
 
 ## Project Management
@@ -315,6 +340,7 @@ Press **?** anytime to view the complete keyboard shortcuts panel.
 - `Esc` - Close panels/dialogs
 - `Ctrl+S` - Save project
 - `Ctrl+N` - New project
+- Theme toggle button (sun/moon icon) in top toolbar
 
 **Tools:**
 - `V` - Select tool
@@ -330,8 +356,8 @@ Press **?** anytime to view the complete keyboard shortcuts panel.
 - `F` - Frame selection
 
 **Edit:**
-- `Ctrl+Z` - Undo
-- `Ctrl+Shift+Z` - Redo
+- `Ctrl+Z` - Undo (also available via toolbar button)
+- `Ctrl+Y` or `Ctrl+Shift+Z` - Redo (also available via toolbar button)
 - `Ctrl+C` - Copy
 - `Ctrl+V` - Paste
 - `Delete` - Delete selection

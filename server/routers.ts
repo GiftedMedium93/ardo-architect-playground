@@ -6,11 +6,14 @@ import { z } from "zod";
 import * as projectDb from "./projectDb";
 import { nanoid } from "nanoid";
 import { aiChatRouter } from "./aiChatRouter";
+import { aiRouter } from "./routers/ai";
 
 export const appRouter = router({
   system: systemRouter,
 
   aiChat: aiChatRouter,
+
+  ai: aiRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

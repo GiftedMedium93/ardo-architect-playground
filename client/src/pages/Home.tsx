@@ -17,10 +17,15 @@ import {
   Glasses,
   Rocket,
   Train,
+  Camera,
   X,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Moon, Sun, Undo2, Redo2 } from "lucide-react";
+import { useUndoRedo } from "@/hooks/useUndoRedo";
+import { toast } from "sonner";
 import ThreeViewport from "@/components/ThreeViewport";
 import ProjectManager from "@/components/ProjectManager";
 import InteractiveTutorial from "@/components/InteractiveTutorial";
@@ -39,17 +44,22 @@ import SpaceArchitecturePanel from "@/components/SpaceArchitecturePanel";
 import TransportationInfrastructurePanel from "@/components/TransportationInfrastructurePanel";
 import MeasurementToolsPanel from "@/components/MeasurementToolsPanel";
 import SmartMaterialSelectionPanel from "@/components/SmartMaterialSelectionPanel";
+import MaterialIdentificationPanel from "@/components/MaterialIdentificationPanel";
 
-type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | null;
+type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
 export default function Home() {
   // The userAuth hooks provides authentication state
   // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
+  const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
   const [activePanel, setActivePanel] = useState<PanelType>(null);
   const [activeTool, setActiveTool] = useState("select");
+  
+  // Undo/Redo state management
+  const { state: sceneState, setState: setSceneState, undo, redo, canUndo, canRedo } = useUndoRedo<any>({});
   const [showProjectManager, setShowProjectManager] = useState(false);
   const [currentProjectId, setCurrentProjectId] = useState<string | null>(null);
   const [showAIChat, setShowAIChat] = useState(false);
@@ -68,6 +78,22 @@ export default function Home() {
         e.preventDefault();
         setShowShortcuts(true);
       }
+      // Undo/Redo shortcuts
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        if (canUndo) {
+          undo();
+          toast.success('Undo');
+        }
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+        e.preventDefault();
+        if (canRedo) {
+          redo();
+          toast.success('Redo');
+        }
+      }
+      
       // Close panels with Escape
       if (e.key === 'Escape') {
         setShowShortcuts(false);
@@ -147,6 +173,35 @@ export default function Home() {
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Undo/Redo Buttons */}
+          <div className="flex items-center gap-1 px-2 py-1 bg-white/5 rounded-lg border border-white/10">
+            <button
+              onClick={undo}
+              disabled={!canUndo}
+              className={`p-2 rounded-lg transition-all ${
+                canUndo
+                  ? "text-gray-400 hover:text-white hover:bg-white/10"
+                  : "text-gray-700 cursor-not-allowed"
+              }`}
+              title="Undo (Ctrl+Z)"
+            >
+              <Undo2 className="w-4 h-4" />
+            </button>
+            <div className="w-px h-4 bg-white/10" />
+            <button
+              onClick={redo}
+              disabled={!canRedo}
+              className={`p-2 rounded-lg transition-all ${
+                canRedo
+                  ? "text-gray-400 hover:text-white hover:bg-white/10"
+                  : "text-gray-700 cursor-not-allowed"
+              }`}
+              title="Redo (Ctrl+Y)"
+            >
+              <Redo2 className="w-4 h-4" />
+            </button>
+          </div>
+          
           <div className="relative w-96">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input
@@ -155,6 +210,18 @@ export default function Home() {
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-teal-400/50 focus:bg-white/10 transition-all placeholder:text-gray-500"
             />
           </div>
+          
+          <button 
+            onClick={toggleTheme}
+            className="p-2.5 hover:bg-white/5 rounded-lg transition-all group"
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-5 h-5 text-gray-400 group-hover:text-yellow-400 transition-colors" />
+            ) : (
+              <Moon className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
+            )}
+          </button>
           
           <button className="p-2.5 hover:bg-white/5 rounded-lg transition-all">
             <Menu className="w-5 h-5 text-gray-400" />
@@ -274,6 +341,7 @@ export default function Home() {
                     { id: "transportation", icon: Train, label: "Transportation Infrastructure", color: "text-blue-400", desc: "Transit & roads" },
                     { id: "measurement", icon: Ruler, label: "Measurement Tools", color: "text-emerald-400", desc: "Precision instruments" },
                     { id: "smart-material", icon: Sparkles, label: "Smart Material Selection", color: "text-purple-400", desc: "AI recommendations" },
+                    { id: "material-id", icon: Camera, label: "Material Identification", color: "text-cyan-400", desc: "AI vision analysis" },
                   ].map((tool) => (
                     <button
                       key={tool.id}
@@ -329,6 +397,8 @@ export default function Home() {
               <MeasurementToolsPanel onClose={() => setActivePanel(null)} />
             ) : activePanel === "smart-material" ? (
               <SmartMaterialSelectionPanel onClose={() => setActivePanel(null)} />
+            ) : activePanel === "material-id" ? (
+              <MaterialIdentificationPanel onClose={() => setActivePanel(null)} />
             ) : null}
           </div>
         </div>
