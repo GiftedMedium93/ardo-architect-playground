@@ -55,6 +55,9 @@ import CommandPalette from "@/components/CommandPalette";
 import ContractorDirectory from "@/components/ContractorDirectory";
 import SchedulingSystem from "@/components/SchedulingSystem";
 import InventoryManagement from "@/components/InventoryManagement";
+import Marketplace from "@/components/Marketplace";
+import InvoicingSystem from "@/components/InvoicingSystem";
+import ProjectTimeline from "@/components/ProjectTimeline";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -96,6 +99,9 @@ export default function Home() {
   const [showContractorDirectory, setShowContractorDirectory] = useState(false);
   const [showScheduling, setShowScheduling] = useState(false);
   const [showInventory, setShowInventory] = useState(false);
+  const [showMarketplace, setShowMarketplace] = useState(false);
+  const [showInvoicing, setShowInvoicing] = useState(false);
+  const [showTimeline, setShowTimeline] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -134,6 +140,9 @@ export default function Home() {
     { id: 'contractors', title: 'Contractor Directory', description: 'Find and hire contractors', icon: '👷', category: 'Construction', keywords: ['contractor', 'hire', 'builder'], action: () => setShowContractorDirectory(true) },
     { id: 'scheduling', title: 'Project Scheduling', description: 'Calendar and timeline management', icon: '📅', category: 'Construction', keywords: ['schedule', 'calendar', 'timeline'], action: () => setShowScheduling(true) },
     { id: 'inventory', title: 'Inventory Management', description: 'Track materials and supplies', icon: '📦', category: 'Construction', keywords: ['inventory', 'stock', 'materials'], action: () => setShowInventory(true) },
+    { id: 'marketplace', title: 'Marketplace', description: 'Buy materials, rent equipment, hire services', icon: '🛍️', category: 'Construction', keywords: ['marketplace', 'buy', 'shop', 'equipment'], action: () => setShowMarketplace(true) },
+    { id: 'invoicing', title: 'Invoicing & Payments', description: 'Create invoices and track payments', icon: '💰', category: 'Construction', keywords: ['invoice', 'payment', 'billing', 'revenue'], action: () => setShowInvoicing(true) },
+    { id: 'timeline', title: 'Project Timeline', description: 'Gantt chart and supply chain tracking', icon: '📊', category: 'Construction', keywords: ['timeline', 'gantt', 'schedule', 'deliveries', 'supply'], action: () => setShowTimeline(true) },
   ];
   
   // Cloud sync
@@ -654,6 +663,21 @@ export default function Home() {
       {/* Inventory Management */}
       {showInventory && (
         <InventoryManagement onClose={() => setShowInventory(false)} />
+      )}
+
+      {/* Marketplace */}
+      {showMarketplace && (
+        <Marketplace onClose={() => setShowMarketplace(false)} />
+      )}
+
+      {/* Invoicing System */}
+      {showInvoicing && (
+        <InvoicingSystem onClose={() => setShowInvoicing(false)} />
+      )}
+
+      {/* Project Timeline */}
+      {showTimeline && (
+        <ProjectTimeline onClose={() => setShowTimeline(false)} />
       )}
 
       {/* Model Loader Modal */}

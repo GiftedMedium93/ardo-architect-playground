@@ -245,16 +245,16 @@
 - [x] Inventory management with real-time stock tracking
 - [x] Low stock alerts and automatic reorder points
 - [x] Supplier integration and vendor management
-- [ ] Materials marketplace with price comparison
-- [ ] Equipment rental marketplace
-- [ ] Service provider marketplace
-- [ ] Invoice generation with customizable templates
-- [ ] Payment tracking and accounts receivable
-- [ ] Purchase order management
-- [ ] Supply chain logistics tracking
-- [ ] Delivery schedule management
-- [ ] Project timeline with Gantt charts
-- [ ] Milestone tracking and dependencies
+- [x] Materials marketplace with price comparison
+- [x] Equipment rental marketplace
+- [x] Service provider marketplace
+- [x] Invoice generation with customizable templates
+- [x] Payment tracking and accounts receivable
+- [x] Purchase order management
+- [x] Supply chain logistics tracking
+- [x] Delivery schedule management
+- [x] Project timeline with Gantt charts
+- [x] Milestone tracking and dependencies
 - [ ] Budget vs actual cost tracking
 - [ ] Resource allocation and optimization
 - [ ] Reporting and analytics dashboard
