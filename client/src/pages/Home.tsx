@@ -52,6 +52,7 @@ import { useCloudSync } from "@/hooks/useCloudSync";
 import { trpc } from "@/lib/trpc";
 import CollaborationPresence from "@/components/CollaborationPresence";
 import CommandPalette from "@/components/CommandPalette";
+import ContractorDirectory from "@/components/ContractorDirectory";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -90,6 +91,7 @@ export default function Home() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [showContractorDirectory, setShowContractorDirectory] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -124,6 +126,8 @@ export default function Home() {
     { id: 'theme', title: 'Toggle Theme', description: 'Switch dark/light mode', icon: theme === 'dark' ? '☀️' : '🌙', category: 'Actions', keywords: ['theme', 'dark', 'light'], action: () => toggleTheme?.() },
     { id: 'undo', title: 'Undo', description: 'Undo last action', icon: '↶', category: 'Actions', keywords: ['undo', 'revert'], action: undo },
     { id: 'redo', title: 'Redo', description: 'Redo last action', icon: '↷', category: 'Actions', keywords: ['redo', 'repeat'], action: redo },
+    // Construction Management
+    { id: 'contractors', title: 'Contractor Directory', description: 'Find and hire contractors', icon: '👷', category: 'Construction', keywords: ['contractor', 'hire', 'builder'], action: () => setShowContractorDirectory(true) },
   ];
   
   // Cloud sync
@@ -621,6 +625,17 @@ export default function Home() {
               const unread = notifications.filter((n: any) => !n.read).length;
               setNotificationCount(unread);
             }
+          }}
+        />
+      )}
+
+      {/* Contractor Directory */}
+      {showContractorDirectory && (
+        <ContractorDirectory
+          onClose={() => setShowContractorDirectory(false)}
+          onSelectContractor={(contractor) => {
+            console.log('Selected contractor:', contractor);
+            // Here you can add logic to schedule or assign the contractor
           }}
         />
       )}
