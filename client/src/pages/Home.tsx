@@ -58,6 +58,8 @@ import InventoryManagement from "@/components/InventoryManagement";
 import Marketplace from "@/components/Marketplace";
 import InvoicingSystem from "@/components/InvoicingSystem";
 import ProjectTimeline from "@/components/ProjectTimeline";
+import VoiceCommands from "@/components/VoiceCommands";
+import AIDesignSuggestions from "@/components/AIDesignSuggestions";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -102,6 +104,7 @@ export default function Home() {
   const [showMarketplace, setShowMarketplace] = useState(false);
   const [showInvoicing, setShowInvoicing] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
+  const [showAISuggestions, setShowAISuggestions] = useState(true);
   
   // Command Palette Actions
   const commandActions = [
@@ -169,6 +172,41 @@ export default function Home() {
       });
     });
   }, [currentProjectId, cloudSync, updateProjectMutation]);
+
+  // Voice command handler
+  const handleVoiceCommand = (command: string) => {
+    switch (command) {
+      case 'ai-partners': setActivePanel('ai-partners'); break;
+      case 'materials': setActivePanel('materials'); break;
+      case 'rendering': setActivePanel('rendering'); break;
+      case 'compliance': setActivePanel('compliance'); break;
+      case 'cost': setActivePanel('cost'); break;
+      case 'contractors': setShowContractorDirectory(true); break;
+      case 'scheduling': setShowScheduling(true); break;
+      case 'inventory': setShowInventory(true); break;
+      case 'marketplace': setShowMarketplace(true); break;
+      case 'invoicing': setShowInvoicing(true); break;
+      case 'timeline': setShowTimeline(true); break;
+      case 'analytics': setShowAnalytics(true); break;
+      case 'undo': undo(); break;
+      case 'redo': redo(); break;
+      case 'save': setShowProjectManager(true); break;
+      case 'load-model': setShowModelLoader(true); break;
+      case 'theme': toggleTheme?.(); break;
+      case 'help': setShowShortcuts(true); break;
+    }
+  };
+
+  // AI suggestion handler
+  const handleAISuggestion = (suggestionId: string) => {
+    console.log('Applying suggestion:', suggestionId);
+    // Handle different suggestion types
+    if (suggestionId === 's1') setActivePanel('materials');
+    if (suggestionId === 's2') setActivePanel('materials');
+    if (suggestionId === 's3') setActivePanel('cost');
+    if (suggestionId === 's4') setActivePanel('compliance');
+    if (suggestionId === 's5') setShowScheduling(true);
+  };
   const [loadedModel, setLoadedModel] = useState<{ url: string; name: string; type: string } | null>(null);
   const [showModelLoader, setShowModelLoader] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -673,6 +711,14 @@ export default function Home() {
       {/* Invoicing System */}
       {showInvoicing && (
         <InvoicingSystem onClose={() => setShowInvoicing(false)} />
+      )}
+
+      {/* Voice Commands */}
+      <VoiceCommands onCommand={handleVoiceCommand} />
+
+      {/* AI Design Suggestions */}
+      {showAISuggestions && (
+        <AIDesignSuggestions onApplySuggestion={handleAISuggestion} />
       )}
 
       {/* Project Timeline */}
