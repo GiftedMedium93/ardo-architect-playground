@@ -23,7 +23,7 @@ import {
 import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useTheme } from "@/contexts/ThemeContext";
-import { Moon, Sun, Undo2, Redo2 } from "lucide-react";
+import { Moon, Sun, Undo2, Redo2, Bell } from "lucide-react";
 import { useUndoRedo } from "@/hooks/useUndoRedo";
 import { toast } from "sonner";
 import ThreeViewport from "@/components/ThreeViewport";
@@ -45,6 +45,13 @@ import TransportationInfrastructurePanel from "@/components/TransportationInfras
 import MeasurementToolsPanel from "@/components/MeasurementToolsPanel";
 import SmartMaterialSelectionPanel from "@/components/SmartMaterialSelectionPanel";
 import MaterialIdentificationPanel from "@/components/MaterialIdentificationPanel";
+import NotificationCenter from "@/components/NotificationCenter";
+import AnalyticsDashboard, { trackSession, trackToolUsage, trackPanelOpen } from "@/components/AnalyticsDashboard";
+import CloudSyncIndicator from "@/components/CloudSyncIndicator";
+import { useCloudSync } from "@/hooks/useCloudSync";
+import { trpc } from "@/lib/trpc";
+import CollaborationPresence from "@/components/CollaborationPresence";
+import CommandPalette from "@/components/CommandPalette";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -58,6 +65,20 @@ export default function Home() {
   const [activePanel, setActivePanel] = useState<PanelType>(null);
   const [activeTool, setActiveTool] = useState("select");
   
+  // Track tool usage
+  useEffect(() => {
+    if (activeTool) {
+      trackToolUsage(activeTool);
+    }
+  }, [activeTool]);
+  
+  // Track panel opens
+  useEffect(() => {
+    if (activePanel) {
+      trackPanelOpen(activePanel);
+    }
+  }, [activePanel]);
+  
   // Undo/Redo state management
   const { state: sceneState, setState: setSceneState, undo, redo, canUndo, canRedo } = useUndoRedo<any>({});
   const [showProjectManager, setShowProjectManager] = useState(false);
@@ -65,14 +86,113 @@ export default function Home() {
   const [showAIChat, setShowAIChat] = useState(false);
   const [selectedAI, setSelectedAI] = useState<{ id: string; name: string; icon: string } | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showCommandPalette, setShowCommandPalette] = useState(false);
+  
+  // Command Palette Actions
+  const commandActions = [
+    // Design Tools
+    { id: 'ai-partners', title: 'AI Design Partners', description: '14 AI personalities for design advice', icon: '🤖', category: 'Design Tools', keywords: ['ai', 'chat', 'assistant'], action: () => setActivePanel('ai-partners') },
+    { id: 'rendering', title: 'Real-time Rendering', description: 'Multiple rendering styles', icon: '✨', category: 'Design Tools', keywords: ['render', 'preview', 'style'], action: () => setActivePanel('rendering') },
+    { id: 'compliance', title: 'Compliance Check', description: 'Code scanning and validation', icon: '🛡️', category: 'Design Tools', keywords: ['code', 'check', 'validate'], action: () => setActivePanel('compliance') },
+    { id: 'cost', title: 'Cost Optimizer', description: '4 optimization modes', icon: '💰', category: 'Design Tools', keywords: ['cost', 'budget', 'optimize'], action: () => setActivePanel('cost') },
+    { id: 'materials', title: 'Material Library', description: '6,000+ materials', icon: '📚', category: 'Design Tools', keywords: ['material', 'texture', 'library'], action: () => setActivePanel('materials') },
+    { id: 'acoustic', title: 'Acoustic Analysis', description: 'Sound simulation', icon: '🌊', category: 'Design Tools', keywords: ['sound', 'acoustic', 'noise'], action: () => setActivePanel('acoustic') },
+    { id: 'vr-ar', title: 'VR/AR Preview', description: 'Immersive preview', icon: '🥽', category: 'Design Tools', keywords: ['vr', 'ar', 'immersive'], action: () => setActivePanel('vr-ar') },
+    { id: 'space', title: 'Space Architecture', description: 'Design for space environments', icon: '🚀', category: 'Design Tools', keywords: ['space', 'mars', 'moon'], action: () => setActivePanel('space-architecture') },
+    { id: 'transportation', title: 'Transportation Infrastructure', description: 'Roads, bridges, tunnels', icon: '🚆', category: 'Design Tools', keywords: ['road', 'bridge', 'rail'], action: () => setActivePanel('transportation') },
+    { id: 'measurement', title: 'Measurement Tools', description: 'Precision instruments', icon: '📏', category: 'Design Tools', keywords: ['measure', 'ruler', 'distance'], action: () => setActivePanel('measurement') },
+    { id: 'smart-material', title: 'Smart Material Selection', description: 'AI-powered recommendations', icon: '🎨', category: 'Design Tools', keywords: ['smart', 'recommend', 'ai'], action: () => setActivePanel('smart-material') },
+    { id: 'material-id', title: 'Material Identification', description: 'AI vision analysis', icon: '📷', category: 'Design Tools', keywords: ['identify', 'camera', 'vision'], action: () => setActivePanel('material-id') },
+    // Tools
+    { id: 'tool-select', title: 'Select Tool', description: 'Select and move objects', icon: '🖱️', category: 'Tools', keywords: ['select', 'move'], action: () => setActiveTool('select') },
+    { id: 'tool-draw', title: 'Draw Tool', description: 'Draw shapes and lines', icon: '✏️', category: 'Tools', keywords: ['draw', 'pen'], action: () => setActiveTool('draw') },
+    { id: 'tool-3d', title: '3D View', description: 'Navigate 3D space', icon: '📦', category: 'Tools', keywords: ['3d', 'view'], action: () => setActiveTool('3d') },
+    { id: 'tool-materials', title: 'Materials Tool', description: 'Apply materials', icon: '🎨', category: 'Tools', keywords: ['material', 'texture'], action: () => setActiveTool('materials') },
+    { id: 'tool-lighting', title: 'Lighting Tool', description: 'Adjust lighting', icon: '💡', category: 'Tools', keywords: ['light', 'illuminate'], action: () => setActiveTool('lighting') },
+    { id: 'tool-measure', title: 'Measure Tool', description: 'Measure distances', icon: '📏', category: 'Tools', keywords: ['measure', 'ruler'], action: () => setActiveTool('measure') },
+    // Actions
+    { id: 'load-model', title: 'Load 3D Model', description: 'Import GLTF/OBJ files', icon: '📁', category: 'Actions', keywords: ['load', 'import', 'model'], action: () => setShowModelLoader(true) },
+    { id: 'export', title: 'Export Project', description: 'Export in multiple formats', icon: '💾', category: 'Actions', keywords: ['export', 'save', 'download'], action: () => setShowExport(true) },
+    { id: 'projects', title: 'Manage Projects', description: 'View and manage projects', icon: '📂', category: 'Actions', keywords: ['project', 'manage'], action: () => setShowProjectManager(true) },
+    { id: 'analytics', title: 'Analytics Dashboard', description: 'View usage metrics', icon: '📊', category: 'Actions', keywords: ['analytics', 'stats', 'metrics'], action: () => setShowAnalytics(true) },
+    { id: 'notifications', title: 'Notifications', description: 'View all notifications', icon: '🔔', category: 'Actions', keywords: ['notification', 'alert'], action: () => setShowNotifications(true) },
+    { id: 'shortcuts', title: 'Keyboard Shortcuts', description: 'View all shortcuts', icon: '⌨️', category: 'Actions', keywords: ['keyboard', 'shortcuts', 'help'], action: () => setShowShortcuts(true) },
+    { id: 'tutorial', title: 'Tutorial', description: 'Interactive walkthrough', icon: '🎓', category: 'Actions', keywords: ['tutorial', 'help', 'guide'], action: () => setShowTutorial(true) },
+    { id: 'theme', title: 'Toggle Theme', description: 'Switch dark/light mode', icon: theme === 'dark' ? '☀️' : '🌙', category: 'Actions', keywords: ['theme', 'dark', 'light'], action: () => toggleTheme?.() },
+    { id: 'undo', title: 'Undo', description: 'Undo last action', icon: '↶', category: 'Actions', keywords: ['undo', 'revert'], action: undo },
+    { id: 'redo', title: 'Redo', description: 'Redo last action', icon: '↷', category: 'Actions', keywords: ['redo', 'repeat'], action: redo },
+  ];
+  
+  // Cloud sync
+  const cloudSync = useCloudSync(currentProjectId, {
+    autoSync: true,
+    syncInterval: 30000,
+    onSyncComplete: () => {
+      console.log('Project synced to cloud');
+    },
+    onSyncError: (error) => {
+      console.error('Sync error:', error);
+    },
+  });
+  
+  // Set up sync function with trpc
+  const updateProjectMutation = trpc.projects.update.useMutation();
+  
+  useEffect(() => {
+    cloudSync.setSyncFunction(async (data) => {
+      if (!currentProjectId) return;
+      await updateProjectMutation.mutateAsync({
+        id: currentProjectId,
+        ...data,
+      });
+    });
+  }, [currentProjectId, cloudSync, updateProjectMutation]);
   const [loadedModel, setLoadedModel] = useState<{ url: string; name: string; type: string } | null>(null);
   const [showModelLoader, setShowModelLoader] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showExport, setShowExport] = useState(false);
 
   // Global keyboard shortcuts
+  // Track session on mount
+  useEffect(() => {
+    trackSession();
+  }, []);
+
+  // Update notification count
+  useEffect(() => {
+    const updateNotificationCount = () => {
+      const stored = localStorage.getItem("ardo_notifications");
+      if (stored) {
+        const notifications = JSON.parse(stored);
+        const unread = notifications.filter((n: any) => !n.read).length;
+        setNotificationCount(unread);
+      }
+    };
+
+    updateNotificationCount();
+    window.addEventListener("ardo-notification-added", updateNotificationCount);
+    
+    // Update count every 30 seconds
+    const interval = setInterval(updateNotificationCount, 30000);
+
+    return () => {
+      window.removeEventListener("ardo-notification-added", updateNotificationCount);
+      clearInterval(interval);
+    };
+  }, []);
+
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Show command palette with Cmd+K or Ctrl+K
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setShowCommandPalette(true);
+        return;
+      }
+      
       // Show shortcuts with '?'
       if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
@@ -155,14 +275,27 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            {["Edit", "View", "Project"].map((item) => (
-              <button
-                key={item}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-              >
-                {item}
+            <button className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
+              Edit
+            </button>
+            
+            <div className="relative group">
+              <button className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
+                View
               </button>
-            ))}
+              <div className="absolute top-full left-0 mt-1 w-48 bg-[#0f1419] border border-white/10 rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <button
+                  onClick={() => setShowAnalytics(true)}
+                  className="w-full px-4 py-2.5 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-all first:rounded-t-lg last:rounded-b-lg"
+                >
+                  Analytics Dashboard
+                </button>
+              </div>
+            </div>
+            
+            <button className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all">
+              Project
+            </button>
             <button
               onClick={() => setShowTutorial(true)}
               className="px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
@@ -210,6 +343,19 @@ export default function Home() {
               className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-teal-400/50 focus:bg-white/10 transition-all placeholder:text-gray-500"
             />
           </div>
+          
+          <button
+            onClick={() => setShowNotifications(true)}
+            className="p-2.5 hover:bg-white/5 rounded-lg transition-all relative group"
+            title="Notifications"
+          >
+            <Bell className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+            {notificationCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-[10px] font-bold text-white">
+                {notificationCount > 9 ? '9+' : notificationCount}
+              </span>
+            )}
+          </button>
           
           <button 
             onClick={toggleTheme}
@@ -300,9 +446,20 @@ export default function Home() {
                 <span className="text-white font-medium">Metric</span>
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              <span className="text-xs text-gray-400">Ready</span>
+            <div className="flex items-center gap-4">
+              <CollaborationPresence projectId={currentProjectId} />
+              {currentProjectId && (
+                <CloudSyncIndicator
+                  status={cloudSync.syncStatus}
+                  lastSyncTime={cloudSync.lastSyncTime}
+                  pendingChanges={cloudSync.pendingChanges}
+                  onSync={cloudSync.forceSyncNow}
+                />
+              )}
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="text-xs text-gray-400">Ready</span>
+              </div>
             </div>
           </div>
         </div>
@@ -414,6 +571,14 @@ export default function Home() {
         )}
       </div>
 
+      {/* Command Palette */}
+      {showCommandPalette && (
+        <CommandPalette
+          onClose={() => setShowCommandPalette(false)}
+          actions={commandActions}
+        />
+      )}
+
       {/* Project Manager Modal */}
       <ProjectManager
         open={showProjectManager}
@@ -437,6 +602,27 @@ export default function Home() {
       {/* Export Panel */}
       {showExport && (
         <ExportPanel onClose={() => setShowExport(false)} projectName="My Project" />
+      )}
+
+      {/* Analytics Dashboard */}
+      {showAnalytics && (
+        <AnalyticsDashboard onClose={() => setShowAnalytics(false)} />
+      )}
+
+      {/* Notification Center */}
+      {showNotifications && (
+        <NotificationCenter
+          onClose={() => {
+            setShowNotifications(false);
+            // Update count after closing
+            const stored = localStorage.getItem("ardo_notifications");
+            if (stored) {
+              const notifications = JSON.parse(stored);
+              const unread = notifications.filter((n: any) => !n.read).length;
+              setNotificationCount(unread);
+            }
+          }}
+        />
       )}
 
       {/* Model Loader Modal */}
