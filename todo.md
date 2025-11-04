@@ -240,11 +240,11 @@
 ## Phase 25: Construction Management & Supply Chain System
 - [x] Contractor Directory with search, ratings, and specializations
 - [x] Contractor profiles with certifications, insurance, and portfolio
-- [ ] Advanced scheduling system with calendar and availability
-- [ ] Conflict detection and automated scheduling optimization
-- [ ] Inventory management with real-time stock tracking
-- [ ] Low stock alerts and automatic reorder points
-- [ ] Supplier integration and vendor management
+- [x] Advanced scheduling system with calendar and availability
+- [x] Conflict detection and automated scheduling optimization
+- [x] Inventory management with real-time stock tracking
+- [x] Low stock alerts and automatic reorder points
+- [x] Supplier integration and vendor management
 - [ ] Materials marketplace with price comparison
 - [ ] Equipment rental marketplace
 - [ ] Service provider marketplace

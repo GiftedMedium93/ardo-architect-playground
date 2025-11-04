@@ -53,6 +53,8 @@ import { trpc } from "@/lib/trpc";
 import CollaborationPresence from "@/components/CollaborationPresence";
 import CommandPalette from "@/components/CommandPalette";
 import ContractorDirectory from "@/components/ContractorDirectory";
+import SchedulingSystem from "@/components/SchedulingSystem";
+import InventoryManagement from "@/components/InventoryManagement";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -92,6 +94,8 @@ export default function Home() {
   const [showAnalytics, setShowAnalytics] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [showContractorDirectory, setShowContractorDirectory] = useState(false);
+  const [showScheduling, setShowScheduling] = useState(false);
+  const [showInventory, setShowInventory] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -128,6 +132,8 @@ export default function Home() {
     { id: 'redo', title: 'Redo', description: 'Redo last action', icon: '↷', category: 'Actions', keywords: ['redo', 'repeat'], action: redo },
     // Construction Management
     { id: 'contractors', title: 'Contractor Directory', description: 'Find and hire contractors', icon: '👷', category: 'Construction', keywords: ['contractor', 'hire', 'builder'], action: () => setShowContractorDirectory(true) },
+    { id: 'scheduling', title: 'Project Scheduling', description: 'Calendar and timeline management', icon: '📅', category: 'Construction', keywords: ['schedule', 'calendar', 'timeline'], action: () => setShowScheduling(true) },
+    { id: 'inventory', title: 'Inventory Management', description: 'Track materials and supplies', icon: '📦', category: 'Construction', keywords: ['inventory', 'stock', 'materials'], action: () => setShowInventory(true) },
   ];
   
   // Cloud sync
@@ -638,6 +644,16 @@ export default function Home() {
             // Here you can add logic to schedule or assign the contractor
           }}
         />
+      )}
+
+      {/* Scheduling System */}
+      {showScheduling && (
+        <SchedulingSystem onClose={() => setShowScheduling(false)} />
+      )}
+
+      {/* Inventory Management */}
+      {showInventory && (
+        <InventoryManagement onClose={() => setShowInventory(false)} />
       )}
 
       {/* Model Loader Modal */}
