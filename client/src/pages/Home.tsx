@@ -60,6 +60,7 @@ import InvoicingSystem from "@/components/InvoicingSystem";
 import ProjectTimeline from "@/components/ProjectTimeline";
 import VoiceCommands from "@/components/VoiceCommands";
 import AIDesignSuggestions from "@/components/AIDesignSuggestions";
+import Product3DViewer from "@/components/Product3DViewer";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -105,6 +106,7 @@ export default function Home() {
   const [showInvoicing, setShowInvoicing] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
   const [showAISuggestions, setShowAISuggestions] = useState(true);
+  const [showProduct3DViewer, setShowProduct3DViewer] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -146,6 +148,7 @@ export default function Home() {
     { id: 'marketplace', title: 'Marketplace', description: 'Buy materials, rent equipment, hire services', icon: '🛍️', category: 'Construction', keywords: ['marketplace', 'buy', 'shop', 'equipment'], action: () => setShowMarketplace(true) },
     { id: 'invoicing', title: 'Invoicing & Payments', description: 'Create invoices and track payments', icon: '💰', category: 'Construction', keywords: ['invoice', 'payment', 'billing', 'revenue'], action: () => setShowInvoicing(true) },
     { id: 'timeline', title: 'Project Timeline', description: 'Gantt chart and supply chain tracking', icon: '📊', category: 'Construction', keywords: ['timeline', 'gantt', 'schedule', 'deliveries', 'supply'], action: () => setShowTimeline(true) },
+    { id: 'product-3d', title: '3D Product Visualizer', description: 'Place real products in 3D scene', icon: '🎨', category: 'Design', keywords: ['3d', 'product', 'visualize', 'render', 'materials'], action: () => setShowProduct3DViewer(true) },
   ];
   
   // Cloud sync
@@ -724,6 +727,11 @@ export default function Home() {
       {/* Project Timeline */}
       {showTimeline && (
         <ProjectTimeline onClose={() => setShowTimeline(false)} />
+      )}
+
+      {/* 3D Product Visualizer */}
+      {showProduct3DViewer && (
+        <Product3DViewer onClose={() => setShowProduct3DViewer(false)} />
       )}
 
       {/* Model Loader Modal */}
