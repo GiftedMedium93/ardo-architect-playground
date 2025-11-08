@@ -61,6 +61,7 @@ import ProjectTimeline from "@/components/ProjectTimeline";
 import VoiceCommands from "@/components/VoiceCommands";
 import AIDesignSuggestions from "@/components/AIDesignSuggestions";
 import Product3DViewer from "@/components/Product3DViewer";
+import QuickActionsToolbar from "@/components/QuickActionsToolbar";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -308,6 +309,17 @@ export default function Home() {
             </div>
             <span className="text-xl font-light tracking-wide">ARDO</span>
           </div>
+          
+          <QuickActionsToolbar
+            onSave={() => { cloudSync.forceSyncNow(); toast.success('Project saved!'); }}
+            onExport={() => toast.info('Export coming soon')}
+            onImport={() => setShowModelLoader(true)}
+            onCopy={() => toast.success('Copied')}
+            onUndo={undo}
+            onRedo={redo}
+            canUndo={canUndo}
+            canRedo={canRedo}
+          />
           
           <nav className="flex items-center gap-1">
             <div className="relative group">

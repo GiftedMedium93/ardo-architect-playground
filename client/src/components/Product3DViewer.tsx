@@ -1,7 +1,8 @@
 import { X, Plus, Trash2, Eye, EyeOff, Move, RotateCw, Maximize2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { product3DCatalog, Product3D, getProductsByCategory } from "@/lib/product3DCatalog";
+import { product3DCatalog, Product3D } from "@/lib/product3DCatalog";
+import { expandedProductCatalog } from "@/lib/expandedProductCatalog";
 
 interface PlacedProduct {
   id: string;
@@ -68,7 +69,8 @@ export default function Product3DViewer({ onClose }: Product3DViewerProps) {
     ));
   };
 
-  const categoryProducts = getProductsByCategory(selectedCategory);
+  const allProducts = [...product3DCatalog, ...expandedProductCatalog];
+  const categoryProducts = allProducts.filter(p => p.category === selectedCategory);
   const selectedProduct = placedProducts.find(p => p.id === selectedPlacedProduct);
 
   return (
