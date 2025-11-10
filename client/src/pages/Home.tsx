@@ -59,9 +59,12 @@ import Marketplace from "@/components/Marketplace";
 import InvoicingSystem from "@/components/InvoicingSystem";
 import ProjectTimeline from "@/components/ProjectTimeline";
 import VoiceCommands from "@/components/VoiceCommands";
+import OnboardingTour from "@/components/OnboardingTour";
 import AIDesignSuggestions from "@/components/AIDesignSuggestions";
 import Product3DViewer from "@/components/Product3DViewer";
 import QuickActionsToolbar from "@/components/QuickActionsToolbar";
+import DigitalTwinSystem from "@/components/DigitalTwinSystem";
+import BlackBoxRecorder from "@/components/BlackBoxRecorder";
 
 type PanelType = "ai-partners" | "rendering" | "compliance" | "cost" | "materials" | "acoustic" | "vr-ar" | "space-architecture" | "transportation" | "measurement" | "smart-material" | "material-id" | null;
 
@@ -107,7 +110,14 @@ export default function Home() {
   const [showInvoicing, setShowInvoicing] = useState(false);
   const [showTimeline, setShowTimeline] = useState(false);
   const [showAISuggestions, setShowAISuggestions] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    const completed = localStorage.getItem('ardo-tour-completed');
+    const skipped = localStorage.getItem('ardo-tour-skipped');
+    return !completed && !skipped;
+  });
   const [showProduct3DViewer, setShowProduct3DViewer] = useState(false);
+  const [showDigitalTwin, setShowDigitalTwin] = useState(false);
+  const [showBBR, setShowBBR] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -150,6 +160,8 @@ export default function Home() {
     { id: 'invoicing', title: 'Invoicing & Payments', description: 'Create invoices and track payments', icon: '💰', category: 'Construction', keywords: ['invoice', 'payment', 'billing', 'revenue'], action: () => setShowInvoicing(true) },
     { id: 'timeline', title: 'Project Timeline', description: 'Gantt chart and supply chain tracking', icon: '📊', category: 'Construction', keywords: ['timeline', 'gantt', 'schedule', 'deliveries', 'supply'], action: () => setShowTimeline(true) },
     { id: 'product-3d', title: '3D Product Visualizer', description: 'Place real products in 3D scene', icon: '🎨', category: 'Design', keywords: ['3d', 'product', 'visualize', 'render', 'materials'], action: () => setShowProduct3DViewer(true) },
+    { id: 'digital-twin', title: 'Digital Twin System', description: 'Real-time simulation and predictive analytics', icon: '🔄', category: 'Advanced', keywords: ['twin', 'simulation', 'iot', 'sensors'], action: () => setShowDigitalTwin(true) },
+    { id: 'bbr', title: 'Black Box Recorder', description: 'Tamper-proof audit trail and liability protection', icon: '🛡️', category: 'Advanced', keywords: ['audit', 'log', 'compliance', 'liability'], action: () => setShowBBR(true) },
   ];
   
   // Cloud sync
@@ -299,7 +311,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-[#0a0e14] text-white overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-[#0a0e14] text-white overflow-hidden">
+      {showOnboarding && (
+        <OnboardingTour
+          onComplete={() => setShowOnboarding(false)}
+          onSkip={() => setShowOnboarding(false)}
+        />
+      )}
       {/* Top Navigation Bar */}
       <div className="h-16 border-b border-white/5 flex items-center justify-between px-6 flex-shrink-0 bg-[#0f1419]/80 backdrop-blur-xl">
         <div className="flex items-center gap-8">
@@ -742,9 +760,9 @@ export default function Home() {
       )}
 
       {/* 3D Product Visualizer */}
-      {showProduct3DViewer && (
-        <Product3DViewer onClose={() => setShowProduct3DViewer(false)} />
-      )}
+      {showProduct3DViewer && <Product3DViewer onClose={() => setShowProduct3DViewer(false)} />}
+      {showDigitalTwin && <DigitalTwinSystem onClose={() => setShowDigitalTwin(false)} />}
+      {showBBR && <BlackBoxRecorder onClose={() => setShowBBR(false)} />}
 
       {/* Model Loader Modal */}
       {showModelLoader && (
