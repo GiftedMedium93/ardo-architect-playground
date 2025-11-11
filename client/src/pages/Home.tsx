@@ -122,7 +122,7 @@ export default function Home() {
   // Command Palette Actions
   const commandActions = [
     // Design Tools
-    { id: 'ai-partners', title: 'AI Design Partners', description: '14 AI personalities for design advice', icon: '🤖', category: 'Design Tools', keywords: ['ai', 'chat', 'assistant'], action: () => setActivePanel('ai-partners') },
+    { id: 'ai-partners', title: 'AI Design Partners', description: '64 AI personalities + 50 trade specialists', icon: '🤖', category: 'Design Tools', keywords: ['ai', 'chat', 'assistant'], action: () => setActivePanel('ai-partners') },
     { id: 'rendering', title: 'Real-time Rendering', description: 'Multiple rendering styles', icon: '✨', category: 'Design Tools', keywords: ['render', 'preview', 'style'], action: () => setActivePanel('rendering') },
     { id: 'compliance', title: 'Compliance Check', description: 'Code scanning and validation', icon: '🛡️', category: 'Design Tools', keywords: ['code', 'check', 'validate'], action: () => setActivePanel('compliance') },
     { id: 'cost', title: 'Cost Optimizer', description: '4 optimization modes', icon: '💰', category: 'Design Tools', keywords: ['cost', 'budget', 'optimize'], action: () => setActivePanel('cost') },
@@ -577,7 +577,7 @@ export default function Home() {
                 {/* Tools List */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-3">
                   {[
-                    { id: "ai-partners", icon: Bot, label: "AI Design Partners", color: "text-blue-400", desc: "14 AI personalities" },
+                    { id: "ai-partners", icon: Bot, label: "AI Design Partners", color: "text-blue-400", desc: "64 personalities + 50 trade specialists" },
                     { id: "rendering", icon: Sparkles, label: "Real-time Rendering", color: "text-purple-400", desc: "Multiple styles" },
                     { id: "compliance", icon: ShieldCheck, label: "Compliance Check", color: "text-green-400", desc: "Code scanning" },
                     { id: "cost", icon: DollarSign, label: "Cost Optimizer", color: "text-yellow-400", desc: "4 optimization modes" },

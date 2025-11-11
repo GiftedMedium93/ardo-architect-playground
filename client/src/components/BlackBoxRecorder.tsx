@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createTimestampedEvent, qrta } from "@/lib/qrta";
 import { X, Shield, Download, Search, Filter, FileText, Lock, AlertCircle, CheckCircle, Clock, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ interface AuditEvent {
   details: string;
   severity: "info" | "warning" | "critical";
   hash: string;
+  qrtaBlock?: number;
 }
 
 interface BlackBoxRecorderProps {
@@ -104,6 +106,13 @@ export default function BlackBoxRecorder({ onClose }: BlackBoxRecorderProps) {
       hash: "b8d3e1f9c2a7"
     }
   ]);
+
+  const [qrtaStatus, setQrtaStatus] = useState({ valid: true, blockCount: 0 });
+
+  useEffect(() => {
+    const status = qrta.getIntegrityStatus();
+    setQrtaStatus({ valid: status.valid, blockCount: status.blockCount });
+  }, []);
 
   const filteredEvents = events.filter(event => {
     const matchesSearch = search === "" ||
@@ -432,6 +441,13 @@ export default function BlackBoxRecorder({ onClose }: BlackBoxRecorderProps) {
                       <span className="text-white font-semibold">{events.length}</span>
                     </div>
                     <div className="flex items-center justify-between">
+                      <span className="text-gray-400">Q-RTA Blockchain</span>
+                      <span className={`font-semibold flex items-center gap-1 ${qrtaStatus.valid ? 'text-green-400' : 'text-red-400'}`}>
+                        <CheckCircle className="w-4 h-4" />
+                        {qrtaStatus.blockCount} blocks
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
                       <span className="text-gray-400">Data Integrity</span>
                       <span className="text-green-400 font-semibold flex items-center gap-1">
                         <CheckCircle className="w-4 h-4" />
@@ -439,10 +455,10 @@ export default function BlackBoxRecorder({ onClose }: BlackBoxRecorderProps) {
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-400">Encryption Status</span>
+                      <span className="text-gray-400">Encryption</span>
                       <span className="text-green-400 font-semibold flex items-center gap-1">
                         <Lock className="w-4 h-4" />
-                        AES-256
+                        Post-Quantum
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
