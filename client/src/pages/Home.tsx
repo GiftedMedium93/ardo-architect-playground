@@ -153,7 +153,7 @@ export default function Home() {
     { id: 'undo', title: 'Undo', description: 'Undo last action', icon: '↶', category: 'Actions', keywords: ['undo', 'revert'], action: undo },
     { id: 'redo', title: 'Redo', description: 'Redo last action', icon: '↷', category: 'Actions', keywords: ['redo', 'repeat'], action: redo },
     // Construction Management
-    { id: 'contractors', title: 'Contractor Directory', description: 'Find and hire contractors', icon: '👷', category: 'Construction', keywords: ['contractor', 'hire', 'builder'], action: () => setShowContractorDirectory(true) },
+    { id: 'contractors', title: 'Contractor Directory', description: '110 contractors across 32 cities', icon: '👷', category: 'Construction', keywords: ['contractor', 'hire', 'professional'], action: () => setShowContractorDirectory(true) },
     { id: 'scheduling', title: 'Project Scheduling', description: 'Calendar and timeline management', icon: '📅', category: 'Construction', keywords: ['schedule', 'calendar', 'timeline'], action: () => setShowScheduling(true) },
     { id: 'inventory', title: 'Inventory Management', description: 'Track materials and supplies', icon: '📦', category: 'Construction', keywords: ['inventory', 'stock', 'materials'], action: () => setShowInventory(true) },
     { id: 'marketplace', title: 'Marketplace', description: 'Buy materials, rent equipment, hire services', icon: '🛍️', category: 'Construction', keywords: ['marketplace', 'buy', 'shop', 'equipment'], action: () => setShowMarketplace(true) },
