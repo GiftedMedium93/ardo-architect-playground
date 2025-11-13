@@ -48,6 +48,7 @@ import MaterialIdentificationPanel from "@/components/MaterialIdentificationPane
 import NotificationCenter from "@/components/NotificationCenter";
 import AnalyticsDashboard, { trackSession, trackToolUsage, trackPanelOpen } from "@/components/AnalyticsDashboard";
 import CloudSyncIndicator from "@/components/CloudSyncIndicator";
+import ARPreview from "@/components/ARPreview";
 import { useCloudSync } from "@/hooks/useCloudSync";
 import { trpc } from "@/lib/trpc";
 import CollaborationPresence from "@/components/CollaborationPresence";
@@ -118,6 +119,7 @@ export default function Home() {
   const [showProduct3DViewer, setShowProduct3DViewer] = useState(false);
   const [showDigitalTwin, setShowDigitalTwin] = useState(false);
   const [showBBR, setShowBBR] = useState(false);
+  const [showARPreview, setShowARPreview] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -162,6 +164,7 @@ export default function Home() {
     { id: 'product-3d', title: '3D Product Visualizer', description: 'Place real products in 3D scene', icon: '🎨', category: 'Design', keywords: ['3d', 'product', 'visualize', 'render', 'materials'], action: () => setShowProduct3DViewer(true) },
     { id: 'digital-twin', title: 'Digital Twin System', description: 'Real-time simulation and predictive analytics', icon: '🔄', category: 'Advanced', keywords: ['twin', 'simulation', 'iot', 'sensors'], action: () => setShowDigitalTwin(true) },
     { id: 'bbr', title: 'Black Box Recorder', description: 'Tamper-proof audit trail and liability protection', icon: '🛡️', category: 'Advanced', keywords: ['audit', 'log', 'compliance', 'liability'], action: () => setShowBBR(true) },
+    { id: 'ar', title: 'AR Preview', description: 'View products in real space', icon: '📱', category: 'Visualization', keywords: ['ar', 'augmented', 'reality', 'camera'], action: () => setShowARPreview(true) },
   ];
   
   // Cloud sync
@@ -763,6 +766,7 @@ export default function Home() {
       {showProduct3DViewer && <Product3DViewer onClose={() => setShowProduct3DViewer(false)} />}
       {showDigitalTwin && <DigitalTwinSystem onClose={() => setShowDigitalTwin(false)} />}
       {showBBR && <BlackBoxRecorder onClose={() => setShowBBR(false)} />}
+      {showARPreview && <ARPreview onClose={() => setShowARPreview(false)} />}
 
       {/* Model Loader Modal */}
       {showModelLoader && (
