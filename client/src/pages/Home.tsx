@@ -49,6 +49,7 @@ import NotificationCenter from "@/components/NotificationCenter";
 import AnalyticsDashboard, { trackSession, trackToolUsage, trackPanelOpen } from "@/components/AnalyticsDashboard";
 import CloudSyncIndicator from "@/components/CloudSyncIndicator";
 import ARPreview from "@/components/ARPreview";
+import ArbitrageEngine from "@/components/ArbitrageEngine";
 import { useCloudSync } from "@/hooks/useCloudSync";
 import { trpc } from "@/lib/trpc";
 import CollaborationPresence from "@/components/CollaborationPresence";
@@ -120,6 +121,7 @@ export default function Home() {
   const [showDigitalTwin, setShowDigitalTwin] = useState(false);
   const [showBBR, setShowBBR] = useState(false);
   const [showARPreview, setShowARPreview] = useState(false);
+  const [showArbitrage, setShowArbitrage] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -165,6 +167,7 @@ export default function Home() {
     { id: 'digital-twin', title: 'Digital Twin System', description: 'Real-time simulation and predictive analytics', icon: '🔄', category: 'Advanced', keywords: ['twin', 'simulation', 'iot', 'sensors'], action: () => setShowDigitalTwin(true) },
     { id: 'bbr', title: 'Black Box Recorder', description: 'Tamper-proof audit trail and liability protection', icon: '🛡️', category: 'Advanced', keywords: ['audit', 'log', 'compliance', 'liability'], action: () => setShowBBR(true) },
     { id: 'ar', title: 'AR Preview', description: 'View products in real space', icon: '📱', category: 'Visualization', keywords: ['ar', 'augmented', 'reality', 'camera'], action: () => setShowARPreview(true) },
+    { id: 'arbitrage', title: 'Arbitrage Engine', description: 'Automated price optimization & profit maximization', icon: '💰', category: 'Construction', keywords: ['arbitrage', 'price', 'savings', 'profit', 'optimization'], action: () => setShowArbitrage(true) },
   ];
   
   // Cloud sync
@@ -767,6 +770,7 @@ export default function Home() {
       {showDigitalTwin && <DigitalTwinSystem onClose={() => setShowDigitalTwin(false)} />}
       {showBBR && <BlackBoxRecorder onClose={() => setShowBBR(false)} />}
       {showARPreview && <ARPreview onClose={() => setShowARPreview(false)} />}
+      {showArbitrage && <ArbitrageEngine onClose={() => setShowArbitrage(false)} />}
 
       {/* Model Loader Modal */}
       {showModelLoader && (
