@@ -666,3 +666,52 @@
 - [x] ROI calculator for arbitrage opportunities
 - [x] Risk assessment for supplier switching
 
+
+
+
+## Phase 33: Intelligent Commerce Engine (ICE) - Core Implementation
+- [ ] Build ICE core architecture integrating with Arbitration Engine
+- [ ] Implement Similar Items Market Window with ML-based item clustering
+- [ ] Create vector embeddings system for product similarity matching
+- [ ] Add contextual grading (Cheaper Items, More Luxurious Items, Upsell suggestions)
+- [ ] Integrate real-time Building Code Service (BCS) compliance filter
+- [ ] Build Availability Salve with real-time availability scoring across suppliers
+- [ ] Create Price Volatility Salve with 7-day and 30-day price trend forecasting
+- [ ] Implement Bulk Pricing Optimizer calculating total landed cost
+- [ ] Build What-If Scenario Sandbox for material substitution testing
+- [ ] Add instant BOM recalculation with timeline and compliance updates
+- [ ] Create ICE panel UI with product suggestions and alternatives
+- [ ] Integrate ICE with Command Palette (Cmd+K → "commerce", "ice", "similar items")
+
+## Phase 34: Enhanced User Control & Audit Trail
+- [ ] Implement Manual Override Audit Trail for all autonomous decisions
+- [ ] Create detailed logging system (reason, timestamp, user ID) for overrides
+- [ ] Build Supplier Inclusion/Exclusion management interface
+- [ ] Add "Mandatory Inclusion" flag for trusted local vendors
+- [ ] Add "Mandatory Exclusion" flag for poor-performing vendors
+- [ ] Integrate supplier preferences with Arbitration Funnel
+- [ ] Create audit trail viewer panel showing all manual interventions
+- [ ] Add export functionality for audit trail (CSV, PDF)
+
+## Phase 35: Universal Accessibility & Inclusivity
+- [ ] Implement WCAG AA/AAA compliance for UI and conversational interfaces
+- [ ] Create color-blindness modes (Protanopia, Deuteranopia, Tritanopia)
+- [ ] Add high-contrast mode for visual impairments
+- [ ] Build Simplified Design Mode hiding complex structural tools
+- [ ] Create beginner-friendly interface for walls/rooms manipulation only
+- [ ] Implement Universal Glossary with role-based auto-translation
+- [ ] Add jargon sensitivity detection (customer vs. engineer language)
+- [ ] Create multi-language support for all technical terms
+- [ ] Add screen reader optimization for all panels
+- [ ] Implement keyboard-only navigation enhancements
+
+## Phase 36: Data Integrity & Curation Systems
+- [ ] Build Metadata Enrichment Engine for all ingested data
+- [ ] Add standardized metadata tagging (creation date, source reliability, compliance jurisdiction)
+- [ ] Implement Autonomous Data Pruning for URTAD and Socio-Economic Knowledge Graph
+- [ ] Create data quality scoring system
+- [ ] Add automated flagging of outdated/contradictory information
+- [ ] Implement Compliance Data Versioning for building codes (IBC 2018 vs. IBC 2021)
+- [ ] Build version tracking system for multi-code-cycle projects
+- [ ] Create data validation service with reliability thresholds
+

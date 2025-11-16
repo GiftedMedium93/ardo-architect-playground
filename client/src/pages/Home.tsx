@@ -50,6 +50,10 @@ import AnalyticsDashboard, { trackSession, trackToolUsage, trackPanelOpen } from
 import CloudSyncIndicator from "@/components/CloudSyncIndicator";
 import ARPreview from "@/components/ARPreview";
 import ArbitrageEngine from "@/components/ArbitrageEngine";
+import IntelligentCommerceEngine from "@/components/advanced/IntelligentCommerceEngine";
+import ManualOverrideAuditTrail from "@/components/advanced/ManualOverrideAuditTrail";
+import SupplierManagement from "@/components/advanced/SupplierManagement";
+import AccessibilitySettings from "@/components/advanced/AccessibilitySettings";
 import { useCloudSync } from "@/hooks/useCloudSync";
 import { trpc } from "@/lib/trpc";
 import CollaborationPresence from "@/components/CollaborationPresence";
@@ -122,6 +126,10 @@ export default function Home() {
   const [showBBR, setShowBBR] = useState(false);
   const [showARPreview, setShowARPreview] = useState(false);
   const [showArbitrage, setShowArbitrage] = useState(false);
+  const [showICE, setShowICE] = useState(false);
+  const [showAuditTrail, setShowAuditTrail] = useState(false);
+  const [showSupplierMgmt, setShowSupplierMgmt] = useState(false);
+  const [showAccessibility, setShowAccessibility] = useState(false);
   
   // Command Palette Actions
   const commandActions = [
@@ -168,6 +176,10 @@ export default function Home() {
     { id: 'bbr', title: 'Black Box Recorder', description: 'Tamper-proof audit trail and liability protection', icon: '🛡️', category: 'Advanced', keywords: ['audit', 'log', 'compliance', 'liability'], action: () => setShowBBR(true) },
     { id: 'ar', title: 'AR Preview', description: 'View products in real space', icon: '📱', category: 'Visualization', keywords: ['ar', 'augmented', 'reality', 'camera'], action: () => setShowARPreview(true) },
     { id: 'arbitrage', title: 'Arbitrage Engine', description: 'Automated price optimization & profit maximization', icon: '💰', category: 'Construction', keywords: ['arbitrage', 'price', 'savings', 'profit', 'optimization'], action: () => setShowArbitrage(true) },
+    { id: 'ice', title: 'Intelligent Commerce Engine', description: 'Similar items, availability salve, price volatility, what-if scenarios', icon: '🛒', category: 'Construction', keywords: ['commerce', 'ice', 'similar', 'substitute', 'availability', 'volatility'], action: () => setShowICE(true) },
+    { id: 'audit-trail', title: 'Manual Override Audit Trail', description: 'Legal defense mechanism - all human interventions logged', icon: '📝', category: 'Advanced', keywords: ['audit', 'override', 'log', 'legal', 'compliance'], action: () => setShowAuditTrail(true) },
+    { id: 'supplier-mgmt', title: 'Supplier Management', description: 'Mandatory inclusion/exclusion controls', icon: '🏪', category: 'Construction', keywords: ['supplier', 'vendor', 'inclusion', 'exclusion', 'blacklist'], action: () => setShowSupplierMgmt(true) },
+    { id: 'accessibility', title: 'Accessibility Settings', description: 'WCAG compliance, color-blindness modes, high contrast', icon: '♿', category: 'Settings', keywords: ['accessibility', 'wcag', 'color-blind', 'contrast', 'screen-reader'], action: () => setShowAccessibility(true) },
   ];
   
   // Cloud sync
@@ -771,6 +783,10 @@ export default function Home() {
       {showBBR && <BlackBoxRecorder onClose={() => setShowBBR(false)} />}
       {showARPreview && <ARPreview onClose={() => setShowARPreview(false)} />}
       {showArbitrage && <ArbitrageEngine onClose={() => setShowArbitrage(false)} />}
+      {showICE && <IntelligentCommerceEngine onClose={() => setShowICE(false)} />}
+      {showAuditTrail && <ManualOverrideAuditTrail onClose={() => setShowAuditTrail(false)} />}
+      {showSupplierMgmt && <SupplierManagement onClose={() => setShowSupplierMgmt(false)} />}
+      {showAccessibility && <AccessibilitySettings onClose={() => setShowAccessibility(false)} />}
 
       {/* Model Loader Modal */}
       {showModelLoader && (

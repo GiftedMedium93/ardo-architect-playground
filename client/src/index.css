@@ -171,3 +171,71 @@
     }
   }
 }
+
+/* ========================================
+   Accessibility Enhancements
+   ======================================== */
+
+/* Color Blindness Filters */
+.protanopia {
+  filter: url('#protanopia-filter');
+}
+
+.deuteranopia {
+  filter: url('#deuteranopia-filter');
+}
+
+.tritanopia {
+  filter: url('#tritanopia-filter');
+}
+
+.achromatopsia {
+  filter: grayscale(100%);
+}
+
+/* High Contrast Modes */
+.contrast-high {
+  --background: oklch(0.05 0 0);
+  --foreground: oklch(1 0 0);
+  --border: oklch(0.9 0 0);
+}
+
+.contrast-ultra {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --border: oklch(1 0 0);
+  --card: oklch(0 0 0);
+  --card-foreground: oklch(1 0 0);
+}
+
+/* Font Size Scaling */
+.font-large {
+  font-size: 125%;
+}
+
+.font-extra-large {
+  font-size: 150%;
+}
+
+/* Reduced Motion */
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Keyboard Navigation Enhancement */
+.keyboard-nav-enabled *:focus {
+  outline: 3px solid oklch(0.7 0.15 180) !important;
+  outline-offset: 2px !important;
+}
+
+/* Screen Reader Mode */
+.screen-reader-mode .sr-only {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
