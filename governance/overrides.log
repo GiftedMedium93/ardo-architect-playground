@@ -1,0 +1,4 @@
+# TIMESTAMP | TYPE | ACTOR | REASON | EXPIRATION
+
+# Example:
+# 2026-04-14T20:00Z | EMERGENCY | Jae Tierce | Production failure | +2h
