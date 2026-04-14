@@ -1,0 +1,19 @@
+version: 1.0
+
+principles:
+  - deny_by_default: true
+  - full_traceability: true
+  - audit_required: true
+
+rules:
+  - id: CONST-001
+    name: "Ticket Required"
+    enforcement: BLOCK
+
+  - id: CONST-002
+    name: "Spec Required"
+    enforcement: BLOCK
+
+  - id: CONST-003
+    name: "Audit Logging Required"
+    enforcement: LOG
