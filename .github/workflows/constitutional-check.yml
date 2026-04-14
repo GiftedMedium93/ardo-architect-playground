@@ -1,0 +1,31 @@
+name: Constitutional Enforcement
+
+on:
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Linear Ticket
+        run: |
+          if ! echo "${{ github.event.pull_request.title }}" | grep -E "LINEAR-[0-9]+"; then
+            echo "❌ Missing Linear ticket reference"
+            exit 1
+          fi
+
+      - name: Validate Description
+        run: |
+          if [ -z "${{ github.event.pull_request.body }}" ]; then
+            echo "❌ Missing PR description"
+            exit 1
+          fi
+
+      - name: Enforce Spec Reference
+        run: |
+          if ! echo "${{ github.event.pull_request.body }}" | grep -i "spec:"; then
+            echo "❌ Missing spec reference"
+            exit 1
+          fi
