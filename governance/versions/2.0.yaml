@@ -1,0 +1,37 @@
+version: 2.0
+
+principles:
+  - deny_by_default: true
+  - full_traceability: true
+  - audit_required: true
+  - version_locked: true
+
+rules:
+  - id: CONST-001
+    name: "Ticket Required"
+    enforcement: BLOCK
+    condition:
+      field: linearTicket
+      operator: exists
+
+  - id: CONST-002
+    name: "Spec Required"
+    enforcement: BLOCK
+    condition:
+      field: specReference
+      operator: exists
+
+  - id: CONST-003
+    name: "Governed Deploy Requires Approval"
+    enforcement: BLOCK
+    condition:
+      all:
+        - field: action
+          operator: equals
+          value: deploy
+        - field: risk_level
+          operator: equals
+          value: high
+        - field: has_approval
+          operator: equals
+          value: true
